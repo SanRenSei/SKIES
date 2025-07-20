@@ -1,14 +1,15 @@
-import BaseComponent from "../BaseComponent.js";
+import BaseComponent from "./BaseComponent.js";
 
 export default class PositionTween extends BaseComponent {
 
-  constructor(parent, targetPosition, time) {
+  constructor(parent, targetPosition, time, onComplete = () => {}) {
     super();
     this.parent = parent;
     this.startPosition = this.parent.computeRelativePosition();
     this.targetPosition = targetPosition;
     this.startTime = new Date().getTime();
     this.pathTime = time;
+    this.onComplete = onComplete;
   }
 
   update() {
@@ -20,6 +21,7 @@ export default class PositionTween extends BaseComponent {
       y: this.startPosition.y*(1-pathCompletion) + this.targetPosition.y*pathCompletion};
     this.parent.positionBehavior = tweenPosition;
     if (pathCompletion>=1) {
+      this.onComplete();
       this.parent.removeChild(this);
     }
   }

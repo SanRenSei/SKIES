@@ -3,7 +3,9 @@ import BaseComponent from "../../components/BaseComponent.js";
 import CollisionShape from "../../components/CollisionShape.js";
 import DirectionalMove from "../../components/DirectionalMove.js";
 import PositionTracker from "../../components/PositionTracker.js";
+import PositionTween from "../../components/PositionTween.js";
 import Shaker from "../../components/Shaker.js";
+import TargetMove from "../../components/TargetMove.js";
 
 class BottomWall extends BaseComponent {
   constructor() {
@@ -14,7 +16,7 @@ class BottomWall extends BaseComponent {
   }
   onCollide(player) {
     player.position.y = Math.max(player.position.y, this.position.y + this.size.h/2 + player.size.h/2);
-    player.dy = 0;
+    player.dy = Math.max(player.dy, 0);
     player.canJump = true;
   }
 }
@@ -28,6 +30,7 @@ class UpperWall extends BaseComponent {
   }
   onCollide(player) {
     player.position.y = Math.min(player.position.y, this.position.y - this.size.h/2 - player.size.h/2);
+    player.dy = Math.min(player.dy, 0);
   }
 }
 
@@ -35,7 +38,7 @@ class LeftWall extends BaseComponent {
   constructor() {
     super();
     this.absolutePosition = true;
-    this.withSprite('verticalWall').withPosition({x:-0.5,y:0.5}).withSize({w:1/32,h:1});
+    this.withSprite('verticalWall').withPosition({x:-33/64,y:0.5}).withSize({w:1/32,h:1});
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
   }
   onCollide(player) {
@@ -47,11 +50,38 @@ class RightWall extends BaseComponent {
   constructor() {
     super();
     this.absolutePosition = true;
-    this.withSprite('verticalWall').withPosition({x:0.5,y:0.5}).withSize({w:1/32,h:1});
+    this.withSprite('verticalWall').withPosition({x:33/64,y:0.5}).withSize({w:1/32,h:1});
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
   }
   onCollide(player) {
     player.position.x = Math.min(player.position.x, this.position.x - this.size.h/2 - player.size.h/2);
+  }
+}
+
+class ElectricSquare extends BaseComponent {
+  constructor() {
+    super();
+    this.absolutePosition = true;
+    this.withSprite('electricSquare').withSize({w:1/32, h:1/32});
+    this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
+  }
+  setPath() {
+    let pos = this.takeTransformSnapshot();
+    if (pos.y <= 1/64 && pos.x > -33/64) {
+      this.addChild(new TargetMove(this, {x:-33/64,y:1/64}, 1, () => this.setPath()));
+    }
+    if (pos.y < 63/64 && pos.x <= -33/64) {
+      this.addChild(new TargetMove(this, {x:-33/64,y:63/64}, 1, () => this.setPath()));
+    }
+    if (pos.y >= 63/64 && pos.x < 33/64) {
+      this.addChild(new TargetMove(this, {x:33/64,y:63/64}, 1, () => this.setPath()));
+    }
+    if (pos.y > 1/64 && pos.x >= 33/64) {
+      this.addChild(new TargetMove(this, {x:33/64,y:1/64}, 1, () => this.setPath()));
+    }
+  }
+  onCollide(player) {
+    player.dead = true;
   }
 }
 
@@ -72,10 +102,26 @@ export default class Shortfuse extends BaseComponent {
     this.subscribeTo('collision', evt => {
       if (evt.collider.parent==this) {
         if (this.walls.includes(evt.collidee.parent) && this.phase=='dash') {
+          this.makeElectricSquareInWall(evt.collidee.parent);
           this.transitionToWait();
         }
       }
     });
+  }
+
+  makeElectricSquareInWall(wall) {
+    if (wall instanceof BottomWall) {
+      this.addChild(new ElectricSquare()).withPosition({x:this.transformSnapshot.x, y:1/64}).withCameraTransform(this.cameraTransform).setPath();
+    }
+    if (wall instanceof UpperWall) {
+      this.addChild(new ElectricSquare()).withPosition({x:this.transformSnapshot.x, y:63/64}).withCameraTransform(this.cameraTransform).setPath();
+    }
+    if (wall instanceof LeftWall) {
+      this.addChild(new ElectricSquare()).withPosition({x:-33/64, y:this.transformSnapshot.y}).withCameraTransform(this.cameraTransform).setPath();
+    }
+    if (wall instanceof RightWall) {
+      this.addChild(new ElectricSquare()).withPosition({x:33/64, y:this.transformSnapshot.y}).withCameraTransform(this.cameraTransform).setPath();
+    }
   }
 
   update() {
@@ -109,13 +155,15 @@ export default class Shortfuse extends BaseComponent {
     }
   }
 
-  update_dash() {
-
-  }
+  update_dash() {}
 
   update_wait() {
-
+    if (new Date().getTime() > this.phaseStart + 3000) {
+      this.transitionToRecover();
+    }
   }
+
+  update_recover() {}
 
   transitionToTarget() {
     this.phaseStart = new Date().getTime();
@@ -146,6 +194,13 @@ export default class Shortfuse extends BaseComponent {
     this.phaseStart = new Date().getTime();
     this.dasher.purge();
     this.phase = 'wait';
+  }
+
+  transitionToRecover() {
+    this.addChild(new TargetMove(this, {x:0,y:0.5}, 0.5, () => {
+      this.transitionToTarget();
+    }));
+    this.phase = 'recover';
   }
 
   onCollide(player) {

@@ -12,6 +12,7 @@ export default class CollisionShape extends BaseComponent {
     this.tags = tags || [];
     this.collidesWith = collidesWith || [];
     this.withSize(parent.computeSize());
+    this.takeTransformSnapshot();
     collider.addShape(this);
   }
 

@@ -47,19 +47,34 @@ class SpriteManager {
     return this.sprites[spriteName];
   }
 
-  drawSprite(ctx, spriteName, left, top, width, height, alpha=1) {
+  drawImage(ctx, image, sx, sy, sw, sh, dx, dy, dw, dh, r, a) {
+    if (r == 0) {
+      ctx.globalAlpha = a;
+      ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+      ctx.globalAlpha = 1;
+      return;
+    }
+
+    let centerX = dx + dw / 2;
+    let centerY = dy + dh / 2;
+
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(r);
+    ctx.globalAlpha = a;
+    ctx.drawImage(image, sx, sy, sw, sh, -dw / 2, -dh / 2, dw, dh);
+    ctx.restore();
+  }
+
+  drawSprite(ctx, spriteName, left, top, width, height, rotation, alpha=1) {
     if (spritePaths[spriteName] || processedSprites[spriteName]) {
-      ctx.drawImage(this.getImage(spriteName), left, top, width, height);
+      let s = this.getImage(spriteName);
+      this.drawImage(ctx, s, 0, 0, s.width, s.height, left, top, width, height, rotation, alpha);
       return;
     }
     if (miniSprites[spriteName]?.sheetName) {
-      console.log('DRAW MINISPRITE')
-      console.log(spriteName)
-      let imgLocation = miniSprites[spriteName].sheetName;
-      ctx.globalAlpha = alpha;
-      ctx.drawImage(this.getImage(imgLocation), miniSprites[spriteName].left, miniSprites[spriteName].top, miniSprites[spriteName].width, miniSprites[spriteName].height, 
-        left, top, width, height);
-      ctx.globalAlpha = 1;
+      let s = miniSprites[spriteName];
+      this.drawImage(ctx, this.getImage(miniSprites[spriteName].sheetName), s.left, s.top, s.width, s.height, left, top, width, height, rotation, alpha);
     }
   }
 

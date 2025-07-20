@@ -112,6 +112,7 @@ export default class BaseComponent {
       this.transformSnapshot = MathUtil.combineTransforms(parentTransform, {...this.computeRelativePosition(), ...this.computeSize(), r: this.rotation, s: this.scale});
     }
     this.children.forEach(c => c.takeTransformSnapshot());
+    return this.transformSnapshot;
   }
 
   computeSprite() {
@@ -125,7 +126,7 @@ export default class BaseComponent {
     if (this.display) {
       if (this.computeSprite()!=null) {
         let drawInfo = this.computeDrawInfo();
-        spriteManager.drawSprite(ctx, this.computeSprite(), drawInfo.x - drawInfo.w/2, drawInfo.y - drawInfo.h/2, drawInfo.w, drawInfo.h);
+        spriteManager.drawSprite(ctx, this.computeSprite(), drawInfo.x - drawInfo.w/2, drawInfo.y - drawInfo.h/2, drawInfo.w, drawInfo.h, drawInfo.r);
       }
       if (this.text!=null) {
         if (this.textFill) {

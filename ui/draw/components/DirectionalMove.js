@@ -13,8 +13,6 @@ export default class DirectionalMove extends BaseComponent {
 
   update() {
     this.parent.position = MathUtil.add2v(this.parent.position, MathUtil.mult2v(this.direction, this.speed*0.01));
-    console.log(this.parent)
-    console.log(this.parent.position)
   }
 
 }

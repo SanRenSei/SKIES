@@ -1,9 +1,43 @@
+import MathUtil from "../../../util/mathUtil.js";
 import BaseComponent from "../../components/BaseComponent.js";
 import CollisionShape from "../../components/CollisionShape.js";
+import DirectionalMove from "../../components/DirectionalMove.js";
+import MaterializeUp from "../../components/MaterializeUp.js";
+import Spin from "../../components/Spin.js";
 import ButtonItem from "../items/ButtonItem.js";
 import DoorPlatform from "../platforms/DoorPlatform.js";
 import GoalPlatform from "../platforms/GoalPlatform.js";
 import NormalPlatform from "../platforms/NormalPlatform.js";
+
+class Gear extends BaseComponent {
+  constructor(parent) {
+    super();
+    this.absolutePosition = true;
+    this.parent = parent;
+    this.withSprite('gear').withPosition(parent.transformSnapshot).withSize({w:2/64,h:2/64}).withCameraTransform(parent.cameraTransform);
+    this.takeTransformSnapshot();
+    this.addChild(new Spin(this, 20));
+    this.addChild(new CollisionShape(this, 'oval', 'collidee', {tags: ['enemy']}));
+  }
+
+  update() {
+    super.update();
+    if (this.transformSnapshot.y < 0) {
+      this.purge();
+    }
+  }
+
+  target(player) {
+    let targetCoords = {...player.computeRelativePosition()};
+    targetCoords.x += 1/16*(Math.random()-0/5);
+    this.addChild(new DirectionalMove(this, MathUtil.diff2v(targetCoords, this.parent.computeRelativePosition()), 1));
+    return this;
+  }
+
+  onCollide(player) {
+    player.dead = true;
+  }
+}
 
 export default class Spikedome extends BaseComponent {
 
@@ -24,6 +58,7 @@ export default class Spikedome extends BaseComponent {
       case 'fall' : this.update_fall(); break;
       case 'stun' : this.update_stun(); break;
     }
+    super.update();
   }
 
   update_start() {
@@ -35,6 +70,11 @@ export default class Spikedome extends BaseComponent {
 
   update_move() {
     this.oscillate();
+    this.nextGear--;
+    if (this.nextGear<=0) {
+      this.nextGear = 50 - this.hp*10;
+      this.addChild(new Gear(this).target(this.parent.player));
+    }
     if (this.parent.children.filter(c => c instanceof DoorPlatform)[1].isOpen) {
       console.log(this.parent.children.filter(c => c instanceof DoorPlatform))
       this.transitionToFall();
@@ -75,6 +115,7 @@ export default class Spikedome extends BaseComponent {
     regularPlatforms[3+Math.floor(3*Math.random())].addChild(new ButtonItem().withDoor(doorPlatforms[1]).withCameraTransform(this.cameraTransform));
     this.phase = 'move';
     this.movingRight = true;
+    this.nextGear = 50;
   }
 
   transitionToFall() {
