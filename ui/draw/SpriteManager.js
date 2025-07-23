@@ -47,7 +47,7 @@ class SpriteManager {
     return this.sprites[spriteName];
   }
 
-  drawImage(ctx, image, sx, sy, sw, sh, dx, dy, dw, dh, r, a) {
+  drawImage(ctx, image, sx, sy, sw, sh, dx, dy, dw, dh, r=0, a=1) {
     if (r == 0) {
       ctx.globalAlpha = a;
       ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);

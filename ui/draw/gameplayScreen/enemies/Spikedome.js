@@ -43,7 +43,7 @@ export default class Spikedome extends BaseComponent {
 
   constructor(parent) {
     super();
-    this.hp = 1;
+    this.hp = 3;
     this.withPosition({x:0,y:-0.5}).withSize({w:0.33,h:0.2}).withSprite('spikedome').withCameraTransform(parent.cameraTransform);
     this.phase = 'start'; // start, move, fall, stun, rise, dead
     this.topHalf = new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}).withPosition({x:0,y:0.05}).withSize({w:0.33, h:0.1});

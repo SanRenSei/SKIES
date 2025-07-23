@@ -3,10 +3,14 @@ import BaseComponent from "./BaseComponent.js";
 
 export default class AnimatedSprite extends BaseComponent {
 
-  constructor(parent, baseSpriteName, numFrames, params) {
+  constructor(parent, sprites, numFrames, params) {
     super();
     this.parent = parent;
-    this.baseSpriteName = baseSpriteName;
+    if (typeof sprites == 'string') {
+      this.baseSpriteName = sprites;
+    } else {
+      this.sprites = sprites;
+    }
     this.numFrames = numFrames;
     this.loopTime = params?.loopTime || 1000;
     this.startTime = new Date().getTime();
@@ -14,8 +18,12 @@ export default class AnimatedSprite extends BaseComponent {
   }
 
   update() {
-    let frameNum = 1+Math.floor((new Date().getTime()-this.startTime)%this.loopTime/(this.loopTime/this.numFrames));
-    this.parent.sprite = this.baseSpriteName + frameNum;
+    let frameNum = Math.floor((new Date().getTime()-this.startTime)%this.loopTime/(this.loopTime/this.numFrames));
+    if (this.baseSpriteName) {
+      this.parent.sprite = this.baseSpriteName + (frameNum+1);
+    } else {
+      this.parent.sprite = this.sprites[frameNum];
+    }
   }
 
 }

@@ -10,8 +10,10 @@ export default class BasePlatform extends BaseComponent {
   }
 
   onCollide(player) {
-    player.canJump = true;
-    player.dy = Math.max(player.dy, 0);
+    if (player.dy<=0) {
+      player.canJump = true;
+      player.dy = Math.max(player.dy, 0);
+    }
     player.position.y = Math.max(player.position.y, player.size.h/2);
   }
 

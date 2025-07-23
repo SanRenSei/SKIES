@@ -5,12 +5,13 @@ import BaseComponent from "./BaseComponent.js";
 
 export default class MaterializeUp extends BaseComponent {
 
-  constructor(parent, duration) {
+  constructor(parent, duration, onComplete = () => {}) {
     super();
     this.parent = parent;
     this.withSize(parent.computeSize()).withSprite(parent.sprite).withCameraTransform(parent.cameraTransform);
     this.parent.sprite = null;
     this.duration = duration;
+    this.onComplete = onComplete;
     this.startTime = new Date().getTime();
   }
 
@@ -35,6 +36,7 @@ export default class MaterializeUp extends BaseComponent {
 
   update() {
     if (new Date().getTime() - this.startTime > this.duration) {
+      this.onComplete();
       this.parent.sprite = this.sprite;
       this.purge();
     }

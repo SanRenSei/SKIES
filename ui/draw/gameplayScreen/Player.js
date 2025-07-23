@@ -10,11 +10,12 @@ export default class Player extends BaseComponent {
   constructor() {
     super();
     this.withPosition({x:0,y:0.05}).withSize({w:50/800,h:50/800});
+    this.snaredBy = null;
     this.canJump = false;
     this.dead = false;
-    setTimeout(() => {this.canJump = true}, 1000);
+    setTimeout(() => {this.canJump = true}, 100);
     this.subscribeTo('pointermove', evt => {
-      if (this.dead) {
+      if (this.dead || this.snaredBy) {
         return;
       }
       let newX = (evt.translatedX-400)/600;
@@ -27,14 +28,23 @@ export default class Player extends BaseComponent {
       this.position.x = newX;
     })
     this.subscribeTo('pointerdown', evt => {
+      if (this.snaredBy) {
+        this.snaredBy.hp--;
+        if (this.snaredBy.hp<=0) {
+          this.snaredBy.purge();
+          this.snaredBy = null;
+          this.dy = 0.5;
+          this.gravity = this.addChild(new Gravity(this, {strength:0.3}));
+        }
+        return;
+      }
       if (this.canJump && !this.dead) {
         this.canJump = false;
         this.dy = 0.5;
       }
     })
     this.setAvatar();
-    this.gravity = new Gravity(this, {strength:0.3});
-    this.addChild(this.gravity);
+    this.gravity = this.addChild(new Gravity(this, {strength:0.3}));
     this.addChild(new CollisionShape(this, 'rect', 'collider', {collidesWith: ['platform', 'item', 'enemy']}));
     this.subscribeTo('collision', evt => {
       if (evt.collider.parent==this) {
@@ -70,6 +80,12 @@ export default class Player extends BaseComponent {
   }
 
   stopMoving() {
+    this.gravity.purge();
+  }
+
+  getSnared(cage) {
+    this.snaredBy = cage;
+    this.withPosition({...cage.transformSnapshot});
     this.gravity.purge();
   }
 

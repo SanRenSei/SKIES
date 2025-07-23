@@ -1,11 +1,12 @@
 import MathUtil from "../../../util/mathUtil.js";
+import AnimatedSprite from "../../components/AnimatedSprite.js";
 import BaseComponent from "../../components/BaseComponent.js";
 import CollisionShape from "../../components/CollisionShape.js";
 import DirectionalMove from "../../components/DirectionalMove.js";
 import PositionTracker from "../../components/PositionTracker.js";
-import PositionTween from "../../components/PositionTween.js";
 import Shaker from "../../components/Shaker.js";
 import TargetMove from "../../components/TargetMove.js";
+import GoalPlatform from "../platforms/GoalPlatform.js";
 
 class BottomWall extends BaseComponent {
   constructor() {
@@ -62,6 +63,7 @@ class ElectricSquare extends BaseComponent {
   constructor() {
     super();
     this.absolutePosition = true;
+    this.gracePeriod = new Date().getTime() + 1000;
     this.withSprite('electricSquare').withSize({w:1/32, h:1/32});
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
   }
@@ -80,6 +82,9 @@ class ElectricSquare extends BaseComponent {
       this.addChild(new TargetMove(this, {x:33/64,y:1/64}, 1, () => this.setPath()));
     }
   }
+  gracePeriodDone() {
+    return new Date().getTime() > this.gracePeriod;
+  }
   onCollide(player) {
     player.dead = true;
   }
@@ -89,7 +94,7 @@ export default class Shortfuse extends BaseComponent {
 
   constructor(parent) {
     super();
-    this.hp = 1;
+    this.hp = 3;
     this.withPosition({x:0,y:-0.5}).withSize({w:0.1,h:0.1}).withSprite('shortfuse').withCameraTransform(parent.cameraTransform);
     this.phase = 'start'; // start, target, prepareDash, dash, wait, recover
     this.addChild(new CollisionShape(this, 'rect', 'both', {tags: ['enemy'], collidesWith: ['enemy']}));
@@ -104,6 +109,15 @@ export default class Shortfuse extends BaseComponent {
         if (this.walls.includes(evt.collidee.parent) && this.phase=='dash') {
           this.makeElectricSquareInWall(evt.collidee.parent);
           this.transitionToWait();
+        }
+        if (evt.collidee.parent instanceof ElectricSquare && evt.collidee.parent.gracePeriodDone() && this.phase == 'wait') {
+          this.hp--;
+          this.damageFlicker = this.addChild(new AnimatedSprite(this, ['shortfuse', 'shortfuse_damaged'], 2, {loopTime: 250}));
+          if (this.hp>0) {
+            this.transitionToRecover();
+          } else {
+            this.transitionToDead();
+          }
         }
       }
     });
@@ -137,7 +151,7 @@ export default class Shortfuse extends BaseComponent {
   }
 
   update_start() {
-    this.position.y += 0.05;
+    this.position.y += 0.01;
     if (this.position.y >= 0.9) {
       this.transitionToTarget();
     }
@@ -167,6 +181,10 @@ export default class Shortfuse extends BaseComponent {
 
   transitionToTarget() {
     this.phaseStart = new Date().getTime();
+    if (this.damageFlicker) {
+      this.damageFlicker.purge();
+      this.damageFlicker = null;
+    }
     this.crosshairs = BaseComponent.createSprite('crosshairs', {x:0,y:0,w:50/800,h:50/800}).withCameraTransform(this.cameraTransform).withAbsolutePosition()
       .withChild(new PositionTracker(this, this.parent.player, {speed: 1}));
     this.addChild(this.crosshairs);
@@ -201,6 +219,11 @@ export default class Shortfuse extends BaseComponent {
       this.transitionToTarget();
     }));
     this.phase = 'recover';
+  }
+
+  transitionToDead() {
+    this.phase = 'dead';
+    this.parent.addChild(new GoalPlatform().withPosition({x:0,y:0.5}).withCameraTransform(this.parent.cameraTransform));
   }
 
   onCollide(player) {
