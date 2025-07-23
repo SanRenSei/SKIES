@@ -4,29 +4,52 @@ import AnimatedSprite from "../components/AnimatedSprite.js";
 import BaseComponent from "../components/BaseComponent.js";
 import CollisionShape from "../components/CollisionShape.js";
 import Gravity from "../components/Gravity.js";
+import Text from "../components/Text.js";
+
+class PlayerMovement extends BaseComponent {
+  constructor(parent) {
+    super();
+    this.parent = parent;
+    this.textUpdateTime = new Date().getTime();
+    this.targetX = this.parent.position.x;
+    this.addChild(new Text('???', {weight: 700}).withSize({w:1/2,h:1/2}).withCameraTransform(parent.cameraTransform));
+    this.subscribeTo('pointermove', evt => {
+      if (this.parent.dead || this.parent.snaredBy) {
+        return;
+      }
+      this.targetX = (evt.translatedX-400)/600;
+      if (this.targetX > this.parent.position.x) {
+        this.parent.faceRight();
+      }
+      if (this.targetX < this.parent.position.x) {
+        this.parent.faceLeft();
+      }
+    })
+    this.subscribeTo('tilt', evt => {
+      if (new Date().getTime() > this.textUpdateTime + 2000) {
+        this.children[0].text = `${evt.alpha} ${evt.beta} ${evt.gamma}`;
+        this.textUpdateTime = new Date().getTime();
+      }
+    })
+  }
+  update() {
+    super.update();
+    let dx = (this.targetX - this.parent.position.x);
+    let timestep = 0.05;
+    this.parent.position.x += dx*timestep;
+  }
+}
 
 export default class Player extends BaseComponent {
 
-  constructor() {
+  constructor(parent) {
     super();
-    this.withPosition({x:0,y:0.05}).withSize({w:50/800,h:50/800});
+    this.withPosition({x:0,y:0.05}).withSize({w:50/800,h:50/800}).withCameraTransform(parent.cameraTransform);
     this.snaredBy = null;
     this.canJump = false;
     this.dead = false;
+    this.dy = 0;
     setTimeout(() => {this.canJump = true}, 100);
-    this.subscribeTo('pointermove', evt => {
-      if (this.dead || this.snaredBy) {
-        return;
-      }
-      let newX = (evt.translatedX-400)/600;
-      if (newX > this.position.x) {
-        this.faceRight();
-      }
-      if (newX < this.position.x) {
-        this.faceLeft();
-      }
-      this.position.x = newX;
-    })
     this.subscribeTo('pointerdown', evt => {
       if (this.snaredBy) {
         this.snaredBy.hp--;
@@ -45,6 +68,7 @@ export default class Player extends BaseComponent {
     })
     this.setAvatar();
     this.gravity = this.addChild(new Gravity(this, {strength:0.3}));
+    this.movement = this.addChild(new PlayerMovement(this));
     this.addChild(new CollisionShape(this, 'rect', 'collider', {collidesWith: ['platform', 'item', 'enemy']}));
     this.subscribeTo('collision', evt => {
       if (evt.collider.parent==this) {

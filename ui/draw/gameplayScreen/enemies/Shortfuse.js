@@ -43,7 +43,7 @@ class LeftWall extends BaseComponent {
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
   }
   onCollide(player) {
-    player.position.x = Math.max(player.position.x, this.position.x + this.size.h/2 + player.size.h/2);
+    player.position.x = Math.max(player.position.x, this.position.x + this.size.w/2 + player.size.w/2);
   }
 }
 
@@ -55,7 +55,7 @@ class RightWall extends BaseComponent {
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
   }
   onCollide(player) {
-    player.position.x = Math.min(player.position.x, this.position.x - this.size.h/2 - player.size.h/2);
+    player.position.x = Math.min(player.position.x, this.position.x - this.size.w/2 - player.size.w/2);
   }
 }
 

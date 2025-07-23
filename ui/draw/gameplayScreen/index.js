@@ -30,7 +30,7 @@ export default class GameplayScreen extends BaseComponent {
       BaseComponent.createSprite('backgroundLoop', {x:0,y:3.5,w:1.33,h:1}).withCameraTransform(this.cameraTransform)
     ]
     this.addChildren(this.backgroundLoops);
-    this.player = new Player().withCameraTransform(this.cameraTransform);
+    this.player = new Player(this);
     this.addChild(this.player);
     this.addChild(new BasePlatform().withCameraTransform(this.cameraTransform));
     let levelInfo = levelData[levelNum];

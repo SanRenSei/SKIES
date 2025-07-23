@@ -1,6 +1,4 @@
 
-import eventDispatcher from "../../event/Dispatcher.js";
-import mouseInstance from "../../event/Mouse.js";
 import CoordUtil from "../../util/coordUtil.js";
 import BaseComponent from "./BaseComponent.js";
 

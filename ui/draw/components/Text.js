@@ -11,7 +11,7 @@ export default class Text extends BaseComponent {
   }
 
   draw(ctx) {
-    let {x,y,w,h} = this.transformSnapshot;
+    let {x,y,w,h} = this.computeDrawInfo();
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.color || 'black';

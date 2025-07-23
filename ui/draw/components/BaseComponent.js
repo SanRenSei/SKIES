@@ -17,7 +17,6 @@ export default class BaseComponent {
     this.size = {w:1,h:1};
     this.sprite = null;
     this.subscriptions = new Set();
-    this.text = null;
     this.transformSnapshot = {x:0,y:0,s:1,w:1,h:1,r:0};
   }
 
@@ -55,11 +54,6 @@ export default class BaseComponent {
 
   withSprite(initialSprite) {
     this.sprite = initialSprite;
-    return this;
-  }
-
-  withText(text) {
-    this.text = text;
     return this;
   }
 
@@ -128,16 +122,6 @@ export default class BaseComponent {
         let drawInfo = this.computeDrawInfo();
         spriteManager.drawSprite(ctx, this.computeSprite(), drawInfo.x - drawInfo.w/2, drawInfo.y - drawInfo.h/2, drawInfo.w, drawInfo.h, drawInfo.r);
       }
-      if (this.text!=null) {
-        if (this.textFill) {
-          ctx.fillStyle = this.textFill;
-        }
-        if (this.font) {
-          ctx.font = this.font;
-        }
-        let drawInfo = this.computeDrawInfo(), textWidth = ctx.measureText(this.text).width;
-        ctx.fillText(this.text, drawInfo.x - textWidth/2, drawInfo.y);
-      }
     }
     this.children.forEach(c => c.draw(ctx));
   }
@@ -150,13 +134,6 @@ export default class BaseComponent {
       }
     }
     this.children.forEach(c => c.queueDraw(priority));
-  }
-
-  queueText(priority) {
-    if (this.display) {
-      let drawInfo = this.computeDrawInfo();
-      spriteManager.queueText(this.text, priority, drawInfo.x, drawInfo.y);
-    }
   }
 
   getRectShape() {
