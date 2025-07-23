@@ -14,11 +14,10 @@ let spritePaths = {
 ].forEach(s => spritePaths[s] = `img/${s}.png`);
 ['platform', 'goalPlatform', 'ghostPlatform', 'movingPlatform', 'teleportingPlatform', 'doorPlatform', 'doorPlatformTransparent', 'firePlatform'].forEach(s => spritePaths[s] = `img/${s}.png`);
 ['redButton', 'inventoryIcon'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['spikedome', 'spikedomeHurt', 'fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs', 'ligatureFace'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['pointedSign'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['hamsterDigger', 'waterWaves'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['shovel'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['inventoryPopup', 'itemPills'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['spikedome', 'spikedomeHurt', 'gear'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['ligatureFace', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['spikesnap'].forEach(s => spritePaths[s] = `img/${s}.png`);
 
 let miniSprites = {
   whiteKing: { sheetName: 'chessPieceSheet', top: 10, height: 150, left: 0, width: 140 },
@@ -53,13 +52,9 @@ Object.keys(animatedSprites).forEach(s => {
 })
 
 let processedSprites = {
-  dog_damaged: (spriteManager) => {
-    let dog = spriteManager.getImage('dog');
-    return ImageUtil.applyRedMask(dog);
-  },
-  birdSheet_damaged: (spriteManager) => {
-    let birdSheet = spriteManager.getImage('birdSheet');
-    return ImageUtil.applyRedMask(birdSheet);
+  shortfuse_damaged: (spriteManager) => {
+    let initialShortFuse = spriteManager.getImage('shortfuse');
+    return ImageUtil.applyMask(initialShortFuse, 255, 0, 0);
   }
 }
 

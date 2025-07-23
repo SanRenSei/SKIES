@@ -35,6 +35,15 @@ export default class CoordUtil {
     return ((p.x - oval.x) ** 2) / ((oval.w / 2) ** 2) + ((p.y - oval.y) ** 2) / ((oval.h / 2) ** 2) <= 1;
   }
 
+  static ovalRotRectCollision(oval, rotRect) {
+    let dx = oval.x - rotRect.x, dy = oval.y - rotRect.y;
+    let cos = Math.cos(-rotRect.r), sin = Math.sin(-rotRect.r);
+
+    let txCircleX = dx * cos - dy * sin, txCircleY = dx * sin + dy * cos;
+    let closestX = Math.max(-rect.w/2, Math.min(oval.x, rect.w/2)), closestY = Math.max(-rect.h/2, Math.min(oval.y, rect.h/2));
+    return this.pointInOval({x:closestX,y:closestY}, {x:txCircleX,y:txCircleY,w:oval.w,h:oval.h});
+  }
+
   static ovalRectCollision(oval, rect) {
     let closestX = Math.max(rect.x - rect.w / 2, Math.min(oval.x, rect.x + rect.w / 2));
     let closestY = Math.max(rect.y - rect.h / 2, Math.min(oval.y, rect.y + rect.h / 2));

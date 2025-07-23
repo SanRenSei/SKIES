@@ -7,7 +7,7 @@ class FeatureFlags {
 
   loadFlags(flags) {
     this.flags = {
-      turnBased: flags%2==1
+      debug: flags%2==1
     }
   }
 
@@ -20,5 +20,5 @@ class FeatureFlags {
 
 }
 
-let instance = new FeatureFlags();
-export default instance;
+let featureFlags = new FeatureFlags();
+export default featureFlags;

@@ -1,4 +1,5 @@
 import playerChars from "../../data/playerChars.js";
+import featureFlags from "../../state/FeatureFlags.js";
 import gameState from "../../state/GameState.js";
 import AnimatedSprite from "../components/AnimatedSprite.js";
 import BaseComponent from "../components/BaseComponent.js";
@@ -10,9 +11,18 @@ class PlayerMovement extends BaseComponent {
   constructor(parent) {
     super();
     this.parent = parent;
-    this.textUpdateTime = new Date().getTime();
     this.targetX = this.parent.position.x;
-    this.addChild(new Text('???', {weight: 700}).withSize({w:1/2,h:1/2}).withCameraTransform(parent.cameraTransform));
+    if (featureFlags.flags.debug) {
+      console.log('DEBUG')
+      this.textUpdateTime = new Date().getTime();
+      this.debug = this.addChild(new Text('???', {weight: 700}).withSize({w:1/2,h:1/2}).withCameraTransform(parent.cameraTransform));
+      this.subscribeTo('tilt', evt => {
+        if (new Date().getTime() > this.textUpdateTime + 2000) {
+          this.debug.text = `${evt.alpha} ${evt.beta} ${evt.gamma}`;
+          this.textUpdateTime = new Date().getTime();
+        }
+      })
+    }
     this.subscribeTo('pointermove', evt => {
       if (this.parent.dead || this.parent.snaredBy) {
         return;
@@ -23,12 +33,6 @@ class PlayerMovement extends BaseComponent {
       }
       if (this.targetX < this.parent.position.x) {
         this.parent.faceLeft();
-      }
-    })
-    this.subscribeTo('tilt', evt => {
-      if (new Date().getTime() > this.textUpdateTime + 2000) {
-        this.children[0].text = `${evt.alpha} ${evt.beta} ${evt.gamma}`;
-        this.textUpdateTime = new Date().getTime();
       }
     })
   }

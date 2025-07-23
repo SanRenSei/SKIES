@@ -1,7 +1,7 @@
 
 export default class ImageUtil {
 
-  static applyRedMask(initialImage) {
+  static applyMask(initialImage, r, g, b) {
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
     canvas.width = initialImage.width;
@@ -11,9 +11,9 @@ export default class ImageUtil {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
-      data[i] = 255;   // Red
-      data[i + 1] = 0; // Green
-      data[i + 2] = 0; // Blue
+      data[i] = r;   // Red
+      data[i + 1] = g; // Green
+      data[i + 2] = b; // Blue
     }
     ctx.putImageData(imageData, 0, 0);
     const newImage = new Image();

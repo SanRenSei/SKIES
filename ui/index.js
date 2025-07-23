@@ -4,6 +4,7 @@ polyfill();
 
 import drawManager from './draw/DrawManager.js';
 import preloadManager from './draw/PreloadManager.js';
+import deviceTilt from './event/DeviceTilt.js';
 import mouse from './event/Mouse.js';
 import featureFlags from './state/FeatureFlags.js';
 
