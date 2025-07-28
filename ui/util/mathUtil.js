@@ -57,7 +57,7 @@ export default class MathUtil {
   }
 
   static combineTransforms(t1, t2) {
-    const cosR = Math.cos(t2.r), sinR = Math.sin(t2.r);
+    const cosR = Math.cos(t1.r), sinR = Math.sin(t1.r);
     const newX = t1.x + t2.x * cosR - t2.y * sinR;
     const newY = t1.y + t2.x * sinR + t2.y * cosR;
     return { x: newX, y: newY, r: t1.r + t2.r, s: t1.s * t2.s, w: t1.s * t2.w, h: t1.s * t2.h };

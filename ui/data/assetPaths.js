@@ -6,18 +6,18 @@ let spritePaths = {
   grass: 'img/grassHex.png'
 };
 
-['backgroundGround', 'backgroundLoop', 'sleepingCat'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['ghostIconLeft1', 'ghostIconLeft2', 'ghostIconRight1', 'ghostIconRight2', 'happyGhost', 'sadGhost'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['backgroundGround', 'backgroundLoop', 'happyGhost', 'sadGhost'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['ghostIconLeft1', 'ghostIconLeft2', 'ghostIconRight1', 'ghostIconRight2'].forEach(s => spritePaths[s] = `img/avatars/${s}.png`);
 ['beachballIconLeft1', 'beachballIconLeft2', 'beachballIconLeft3', 'beachballIconLeft4', 
   'beachballIconRight1', 'beachballIconRight2',  'beachballIconRight3', 'beachballIconRight4',
   'eightballIconLeft', 'eightballIconRight', 'bunnyIconLeft', 'bunnyIconRight', 'pumpkinIconLeft', 'pumpkinIconRight'
-].forEach(s => spritePaths[s] = `img/${s}.png`);
-['platform', 'goalPlatform', 'ghostPlatform', 'movingPlatform', 'teleportingPlatform', 'doorPlatform', 'doorPlatformTransparent', 'firePlatform'].forEach(s => spritePaths[s] = `img/${s}.png`);
+].forEach(s => spritePaths[s] = `img/avatars/${s}.png`);
+['platform', 'goalPlatform', 'ghostPlatform', 'movingPlatform', 'teleportingPlatform', 'doorPlatform', 'doorPlatformTransparent', 'firePlatform'].forEach(s => spritePaths[s] = `img/platforms/${s}.png`);
 ['redButton', 'inventoryIcon'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['spikedome', 'spikedomeHurt', 'gear'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['ligatureFace', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/${s}.png`);
-['spikesnap'].forEach(s => spritePaths[s] = `img/${s}.png`);
+['spikedome', 'spikedomeHurt', 'gear'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['ligatureFace', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['tortsnap', 'tortsnapNoHorn', 'extendoHorn'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 
 let miniSprites = {
   whiteKing: { sheetName: 'chessPieceSheet', top: 10, height: 150, left: 0, width: 140 },

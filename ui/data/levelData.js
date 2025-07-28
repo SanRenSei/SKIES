@@ -111,6 +111,21 @@ let levelData = [
       { type: 0, x: 0.33, y: 0.6 }
     ],
     enemyPreset: [{ type: 'ligature' }]
+  }, {level:16}, {level:17}, {level:18}, {level:19}, {
+    level: 20,
+    height: 1,
+    minSpace: 0,
+    maxSpace: 0,
+    cameraLock: true,
+    platformPreset: [
+      { type: 0, x: -0.33, y: 0.2 }, 
+      { type: 0, x: 0, y: 0.2 }, 
+      { type: 0, x: 0.33, y: 0.2 }, 
+      { type: 0, x: -0.33, y: 0.6 }, 
+      { type: 0, x: 0, y: 0.6 }, 
+      { type: 0, x: 0.33, y: 0.6 }
+    ],
+    enemyPreset: [{ type: 'tortsnap' }]
   },
 ]
 

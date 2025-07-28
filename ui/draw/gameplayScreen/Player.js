@@ -12,17 +12,18 @@ class PlayerMovement extends BaseComponent {
     super();
     this.parent = parent;
     this.targetX = this.parent.position.x;
-    if (featureFlags.flags.debug) {
-      console.log('DEBUG')
-      this.textUpdateTime = new Date().getTime();
-      this.debug = this.addChild(new Text('???', {weight: 700}).withSize({w:1/2,h:1/2}).withCameraTransform(parent.cameraTransform));
-      this.subscribeTo('tilt', evt => {
-        if (new Date().getTime() > this.textUpdateTime + 2000) {
-          this.debug.text = `${evt.alpha} ${evt.beta} ${evt.gamma}`;
-          this.textUpdateTime = new Date().getTime();
-        }
-      })
-    }
+    this.subscribeTo('tilt', evt => {
+      this.dx = evt.gamma/50;
+      if (this.dx>0) {
+        this.parent.faceRight();
+      }
+      if (this.dx<0) {
+        this.parent.faceLeft();
+      }
+      if (new Date().getTime() > this.textUpdateTime + 2000) {
+        this.textUpdateTime = new Date().getTime();
+      }
+    })
     this.subscribeTo('pointermove', evt => {
       if (this.parent.dead || this.parent.snaredBy) {
         return;
@@ -38,9 +39,19 @@ class PlayerMovement extends BaseComponent {
   }
   update() {
     super.update();
-    let dx = (this.targetX - this.parent.position.x);
     let timestep = 0.05;
+    if (this.dx) {
+      this.parent.position.x += this.dx*timestep;
+      return;
+    }
+    let dx = (this.targetX - this.parent.position.x);
     this.parent.position.x += dx*timestep;
+    if (this.parent.position.x < -0.66) {
+      this.parent.position.x = -0.66;
+    }
+    if (this.parent.position.x > 0.66) {
+      this.parent.position.x = 0.66;
+    }
   }
 }
 
@@ -73,7 +84,7 @@ export default class Player extends BaseComponent {
     this.setAvatar();
     this.gravity = this.addChild(new Gravity(this, {strength:0.3}));
     this.movement = this.addChild(new PlayerMovement(this));
-    this.addChild(new CollisionShape(this, 'rect', 'collider', {collidesWith: ['platform', 'item', 'enemy']}));
+    this.addChild(new CollisionShape(this, 'oval', 'collider', {collidesWith: ['platform', 'item', 'enemy']}));
     this.subscribeTo('collision', evt => {
       if (evt.collider.parent==this) {
         evt.collidee.parent.onCollide(this, evt.collidee);

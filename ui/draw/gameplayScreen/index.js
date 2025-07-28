@@ -13,6 +13,7 @@ import Spikedome from "./enemies/Spikedome.js";
 import Fireball from "./enemies/Fireball.js";
 import Shortfuse from "./enemies/Shortfuse.js";
 import Ligature from "./enemies/Ligature.js";
+import Tortsnap from "./enemies/Tortsnap.js";
 
 export default class GameplayScreen extends BaseComponent {
 
@@ -122,6 +123,7 @@ export default class GameplayScreen extends BaseComponent {
         case 'ligature' : this.addChild(new Ligature(this)); break;
         case 'shortfuse' : this.addChild(new Shortfuse(this)); break;
         case 'spikedome' : this.addChild(new Spikedome(this)); break;
+        case 'tortsnap' : this.addChild(new Tortsnap(this)); break;
       }
     })
   }

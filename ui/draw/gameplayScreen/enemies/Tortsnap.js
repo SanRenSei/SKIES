@@ -1,3 +1,4 @@
+import CoordUtil from "../../../util/coordUtil.js";
 import MathUtil from "../../../util/mathUtil.js";
 import BaseComponent from "../../components/BaseComponent.js";
 import CollisionShape from "../../components/CollisionShape.js";
@@ -9,16 +10,44 @@ import DoorPlatform from "../platforms/DoorPlatform.js";
 import GoalPlatform from "../platforms/GoalPlatform.js";
 import NormalPlatform from "../platforms/NormalPlatform.js";
 
-export default class Spikesnap extends BaseComponent {
+class ExtendoHorn extends BaseComponent {
+  constructor(parent) {
+    super();
+    this.parent = parent;
+    this.baseCoords = {x:0.43,y:0.39};
+    this.targetCoords = {x:0,y:0.5};
+    this.length = 1;
+    this.withSprite('extendoHorn').withCameraTransform(parent.cameraTransform);
+    this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags:['enemy']}));
+  }
+
+  update() {
+    super.update();
+    this.withPosition(CoordUtil.applyMovementNoStop(this.baseCoords, this.targetCoords, this.length/2));
+    this.withRotation(-Math.atan2(this.baseCoords.y - this.targetCoords.y, this.baseCoords.x - this.targetCoords.x));
+    this.withSize({w:this.length,h:0.02});
+    if (this.length<1.5) {
+      //this.length += 0.01;
+    }
+  }
+
+  onCollide(player) {
+    if (player.dy > 0) {
+      player.dy = 0;
+    }
+  }
+}
+
+export default class Tortsnap extends BaseComponent {
 
   constructor(parent) {
     super();
     this.hp = 3;
-    this.withPosition({x:0,y:-0.5}).withSize({w:0.33,h:0.2}).withSprite('spikesnap').withCameraTransform(parent.cameraTransform);
+    this.withPosition({x:0.9,y:1/4}).withSize({w:1/2,h:1/2}).withSprite('tortsnap').withCameraTransform(parent.cameraTransform);
     this.phase = 'start'; // start, move, fall, stun, rise, dead
-    this.topHalf = new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}).withPosition({x:0,y:0.05}).withSize({w:0.33, h:0.1});
-    this.bottomHalf = new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}).withPosition({x:0,y:-0.04}).withSize({w:0.28, h:0.08});
-    this.addChildren([this.topHalf, this.bottomHalf]);
+    //this.topHalf = new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}).withPosition({x:0,y:0.05}).withSize({w:0.33, h:0.1});
+    //this.bottomHalf = new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}).withPosition({x:0,y:-0.04}).withSize({w:0.28, h:0.08});
+    //this.addChildren([this.topHalf, this.bottomHalf]);
   }
 
   update() {
@@ -32,23 +61,13 @@ export default class Spikesnap extends BaseComponent {
   }
 
   update_start() {
-    this.position.y += 0.005;
-    if (this.position.y >= 0.9) {
+    this.position.x -= 0.005;
+    if (this.position.x <= 0.5) {
       this.transitionToMove();
     }
   }
 
   update_move() {
-    this.oscillate();
-    this.nextGear--;
-    if (this.nextGear<=0) {
-      this.nextGear = 50 - this.hp*10;
-      this.addChild(new Gear(this).target(this.parent.player));
-    }
-    if (this.parent.children.filter(c => c instanceof DoorPlatform)[1].isOpen) {
-      console.log(this.parent.children.filter(c => c instanceof DoorPlatform))
-      this.transitionToFall();
-    }
   }
 
   update_fall() {
@@ -79,13 +98,9 @@ export default class Spikesnap extends BaseComponent {
   }
 
   transitionToMove() {
-    let regularPlatforms = this.parent.children.filter(c => c instanceof NormalPlatform);
-    let doorPlatforms = this.parent.children.filter(c => c instanceof DoorPlatform);
-    regularPlatforms[Math.floor(3*Math.random())].addChild(new ButtonItem().withDoor(doorPlatforms[0]).withCameraTransform(this.cameraTransform));
-    regularPlatforms[3+Math.floor(3*Math.random())].addChild(new ButtonItem().withDoor(doorPlatforms[1]).withCameraTransform(this.cameraTransform));
+    this.parent.addChild(new ExtendoHorn(this));
+    this.withSprite('tortsnapNoHorn')
     this.phase = 'move';
-    this.movingRight = true;
-    this.nextGear = 50;
   }
 
   transitionToFall() {

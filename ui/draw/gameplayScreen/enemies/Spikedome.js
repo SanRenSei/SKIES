@@ -72,7 +72,7 @@ export default class Spikedome extends BaseComponent {
     this.oscillate();
     this.nextGear--;
     if (this.nextGear<=0) {
-      this.nextGear = 50 - this.hp*10;
+      this.nextGear = 40 + this.hp*20;
       this.addChild(new Gear(this).target(this.parent.player));
     }
     if (this.parent.children.filter(c => c instanceof DoorPlatform)[1].isOpen) {

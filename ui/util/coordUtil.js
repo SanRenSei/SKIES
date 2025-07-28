@@ -11,6 +11,12 @@ export default class CoordUtil {
     return MathUtil.add2v(start, MathUtil.mult2v(direction, velocity/distance));
   }
 
+  static applyMovementNoStop(start, target, velocity) {
+    let direction = MathUtil.diff2v(target, start);
+    let distance = MathUtil.get2vMag(direction);
+    return MathUtil.add2v(start, MathUtil.mult2v(direction, velocity/distance));
+  }
+
   static scaleSize(size, scale) {
     return {w:size.w*scale, h:size.h*scale};
   }
@@ -37,14 +43,18 @@ export default class CoordUtil {
 
   static ovalRotRectCollision(oval, rotRect) {
     let dx = oval.x - rotRect.x, dy = oval.y - rotRect.y;
-    let cos = Math.cos(-rotRect.r), sin = Math.sin(-rotRect.r);
+    let cos = Math.cos(rotRect.r), sin = Math.sin(rotRect.r);
 
     let txCircleX = dx * cos - dy * sin, txCircleY = dx * sin + dy * cos;
-    let closestX = Math.max(-rect.w/2, Math.min(oval.x, rect.w/2)), closestY = Math.max(-rect.h/2, Math.min(oval.y, rect.h/2));
-    return this.pointInOval({x:closestX,y:closestY}, {x:txCircleX,y:txCircleY,w:oval.w,h:oval.h});
+    let closestX = Math.max(-rotRect.w/2, Math.min(txCircleX, rotRect.w/2)), closestY = Math.max(-rotRect.h/2, Math.min(txCircleY, rotRect.h/2));
+    let toReturn = this.pointInOval({x:closestX,y:closestY}, {x:txCircleX,y:txCircleY,w:oval.w,h:oval.h});
+    return toReturn;
   }
 
   static ovalRectCollision(oval, rect) {
+    if (rect.r) {
+      return CoordUtil.ovalRotRectCollision(oval, rect);
+    }
     let closestX = Math.max(rect.x - rect.w / 2, Math.min(oval.x, rect.x + rect.w / 2));
     let closestY = Math.max(rect.y - rect.h / 2, Math.min(oval.y, rect.y + rect.h / 2));
     return CoordUtil.pointInOval({x:closestX, y:closestY}, oval);

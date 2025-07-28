@@ -5,6 +5,7 @@ import DirectionalMove from "../../components/DirectionalMove.js";
 import FadeIn from "../../components/FadeIn.js";
 import MaterializeUp from "../../components/MaterializeUp.js";
 import TiledSprite from "../../components/TiledSprite.js";
+import GoalPlatform from "../platforms/GoalPlatform.js";
 import NormalPlatform from "../platforms/NormalPlatform.js";
 
 class RedCage extends BaseComponent {
@@ -111,7 +112,8 @@ export default class Ligature extends BaseComponent {
     this.hp = 1;
     this.withPosition({x:0,y:-0.5}).withSize({w:0.33,h:0.2}).withCameraTransform(parent.cameraTransform);
     this.addChild(new AnimatedSprite(this, 'ligatureFace', 6));
-    this.phase = 'start'; // start, makeCages, stringyDoom, explodeCages, rise, dead
+    this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
+    this.phase = 'start';
   }
 
   update() {
@@ -121,12 +123,13 @@ export default class Ligature extends BaseComponent {
       case 'makeCages' : this.update_makeCages(); break;
       case 'stringyDoom' : this.update_stringyDoom(); break;
       case 'explodeCages' : this.update_explodeCages(); break;
+      case 'fall' : this.update_fall(); break;
     }
     super.update();
   }
 
   update_start() {
-    this.position.y += 0.05;
+    this.position.y += 0.005;
     if (this.position.y >= 0.9) {
       this.transitionToMakeCages();
     }
@@ -152,6 +155,27 @@ export default class Ligature extends BaseComponent {
 
   update_explodeCages() {
     this.oscillate();
+    if (new Date().getTime() > this.phaseStart + 2000) {
+      this.transitionToFall();
+    }
+  }
+
+  update_fall() {
+    this.oscillate();
+    this.dy += 0.01 * this.ddy;
+    this.position.y += 0.01 * this.dy;
+    if (this.position.y < 0.1 && this.dy < 0) {
+      this.dy = -0.5*this.dy;
+      this.bounces++;
+    }
+    if (this.bounces>=3) {
+      this.dy = 0;
+      this.transitionToStart();
+    }
+  }
+
+  transitionToStart() {
+    this.phase = 'start';
   }
 
   transitionToMove() {
@@ -185,6 +209,14 @@ export default class Ligature extends BaseComponent {
     platforms.forEach(p => {
       p.children.filter(i => i instanceof RedCage).forEach(rc => rc.explode());
     });
+    this.phase = 'explodeCages';
+  }
+
+  transitionToFall() {
+    this.ddy = -0.5;
+    this.dy = 0;
+    this.bounces = 0;
+    this.phase = 'fall';
   }
 
   oscillate() {
@@ -201,7 +233,19 @@ export default class Ligature extends BaseComponent {
     }
   }
 
-  onCollide(player, collisionSpot) {
+  onCollide(player) {
+    if (this.phase=='fall' && this.bounces>=1) {
+      if (this.hp<=0) {
+        this.phase = 'dead';
+        this.parent.addChild(new GoalPlatform().withPosition({x:0,y:0.5}).withCameraTransform(this.parent.cameraTransform));
+      } else {
+        this.transitionToStart();
+      }
+      return;
+    }
+    if (this.phase!='start' && this.phase!='fall') {
+      player.dead = true;
+    }
   }
 
 }

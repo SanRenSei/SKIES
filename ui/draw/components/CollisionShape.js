@@ -11,13 +11,12 @@ export default class CollisionShape extends BaseComponent {
     this.type = type;
     this.tags = tags || [];
     this.collidesWith = collidesWith || [];
-    this.withSize(parent.computeSize());
     this.takeTransformSnapshot();
     collider.addShape(this);
   }
 
   getCollisionShape() {
-    return {shape: this.shape, ...this.transformSnapshot};
+    return {shape: this.shape, ...this.parent.transformSnapshot};
   }
 
   purge() {

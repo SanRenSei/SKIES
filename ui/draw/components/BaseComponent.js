@@ -5,6 +5,7 @@ import spriteManager from '../SpriteManager.js';
 
 export default class BaseComponent {
 
+  
   constructor() {
     this.parent = null;
     this.cameraTransform = null;
@@ -21,7 +22,7 @@ export default class BaseComponent {
   }
 
   static createSprite(spriteName, transform) {
-    return new BaseComponent().withSprite(spriteName).withPosition(transform).withSize(transform);
+    return new BaseComponent().withSprite(spriteName).withPosition(transform).withSize(transform).withRotation(transform.r || 0);
   }
 
   withChild(child) {
@@ -40,7 +41,26 @@ export default class BaseComponent {
   }
 
   withCameraTransform(cameraTransform) {
-    this.cameraTransform = cameraTransform;
+    if (typeof cameraTransform == 'function') {
+      this.cameraTransform = cameraTransform;
+      return this;
+    }
+    this.cameraTransform = (coords) => {
+      let {x,y,w,h,s,r} = coords;
+      let drawWidth = 800, drawHeight = 600;
+      return {
+        x : drawWidth/2 + drawWidth*(x-cameraTransform.x)/cameraTransform.w,
+        y : drawHeight/2 + drawHeight*(y-cameraTransform.y)/cameraTransform.h,
+        w : w/cameraTransform.w*drawWidth,
+        h : h/cameraTransform.h*drawHeight,
+        s, r
+      };
+    }
+    return this;
+  }
+
+  withRotation(initialRotation) {
+    this.rotation = initialRotation;
     return this;
   }
 
