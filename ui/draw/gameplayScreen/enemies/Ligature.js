@@ -105,13 +105,47 @@ class StringyDoomRight extends BaseComponent {
   }
 }
 
+class Noodles extends BaseComponent {
+  constructor(parent) {
+    super();
+    this.parent = parent;
+    this.withSize({w:0.2,h:0.1}).withCameraTransform(parent.cameraTransform);
+    this.noodles = this.addChild(new AnimatedSprite(this, 'ligatureNoodles', 6));
+    this.noodles.alpha = 0.5;
+    this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
+  }
+
+  onCollide(player) {
+    if (this.parent.phase!='start' && this.parent.phase!='fall') {
+      player.dead = true;
+    }
+  }
+
+  glow() {
+    this.redAura = this.addChild(new AnimatedSprite(this, 'ligatureNoodles_glowing', 6));
+    this.redAura.startTime = this.noodles.startTime;
+    this.redAura.addChild(new FadeIn(this.redAura, 2000));
+  }
+
+  hide() {
+    this.redAura.purge();
+    this.noodles.alpha = 0;
+  }
+
+  show() {
+    this.noodles.alpha = 0.5;
+  }
+}
+
 export default class Ligature extends BaseComponent {
 
   constructor(parent) {
     super();
     this.hp = 1;
     this.withPosition({x:0,y:-0.5}).withSize({w:0.33,h:0.2}).withCameraTransform(parent.cameraTransform);
-    this.addChild(new AnimatedSprite(this, 'ligatureFace', 6));
+    this.face = this.addChild(new AnimatedSprite(this, 'ligatureFace', 6));
+    this.leftNoodles = this.addChild(new Noodles(this).withPosition({x:-0.15,y:0}));
+    this.rightNoodles = this.addChild(new Noodles(this).withPosition({x:0.15,y:0}));
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}));
     this.phase = 'start';
   }
@@ -175,10 +209,15 @@ export default class Ligature extends BaseComponent {
   }
 
   transitionToStart() {
+    this.face.baseSpriteName = 'ligatureFace';
+    this.leftNoodles.show();
+    this.rightNoodles.show();
     this.phase = 'start';
   }
 
   transitionToMove() {
+    this.leftNoodles.show();
+    this.rightNoodles.show();
     this.phase = 'move';
     this.movingRight = true;
   }
@@ -209,6 +248,8 @@ export default class Ligature extends BaseComponent {
     platforms.forEach(p => {
       p.children.filter(i => i instanceof RedCage).forEach(rc => rc.explode());
     });
+    this.leftNoodles.glow();
+    this.rightNoodles.glow();
     this.phase = 'explodeCages';
   }
 
@@ -216,6 +257,9 @@ export default class Ligature extends BaseComponent {
     this.ddy = -0.5;
     this.dy = 0;
     this.bounces = 0;
+    this.face.baseSpriteName = 'ligatureFaceVulnerable';
+    this.leftNoodles.hide();
+    this.rightNoodles.hide();
     this.phase = 'fall';
   }
 

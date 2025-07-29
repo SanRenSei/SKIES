@@ -11,6 +11,7 @@ export default class BaseComponent {
     this.cameraTransform = null;
     this.children = [];
     this.display = true;
+    this.alpha = 1;
     this.absolutePosition = null;
     this.position = {x:0,y:0};
     this.rotation = 0;
@@ -140,7 +141,7 @@ export default class BaseComponent {
     if (this.display) {
       if (this.computeSprite()!=null) {
         let drawInfo = this.computeDrawInfo();
-        spriteManager.drawSprite(ctx, this.computeSprite(), drawInfo.x - drawInfo.w/2, drawInfo.y - drawInfo.h/2, drawInfo.w, drawInfo.h, drawInfo.r);
+        spriteManager.drawSprite(ctx, this.computeSprite(), drawInfo.x - drawInfo.w/2, drawInfo.y - drawInfo.h/2, drawInfo.w, drawInfo.h, drawInfo.r, this.alpha);
       }
     }
     this.children.forEach(c => c.draw(ctx));

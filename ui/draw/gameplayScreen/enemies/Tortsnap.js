@@ -3,12 +3,8 @@ import MathUtil from "../../../util/mathUtil.js";
 import BaseComponent from "../../components/BaseComponent.js";
 import CollisionShape from "../../components/CollisionShape.js";
 import DirectionalMove from "../../components/DirectionalMove.js";
-import MaterializeUp from "../../components/MaterializeUp.js";
-import Spin from "../../components/Spin.js";
-import ButtonItem from "../items/ButtonItem.js";
 import DoorPlatform from "../platforms/DoorPlatform.js";
 import GoalPlatform from "../platforms/GoalPlatform.js";
-import NormalPlatform from "../platforms/NormalPlatform.js";
 
 class ExtendoHorn extends BaseComponent {
   constructor(parent) {
@@ -16,7 +12,7 @@ class ExtendoHorn extends BaseComponent {
     this.parent = parent;
     this.baseCoords = {x:0.43,y:0.39};
     this.targetCoords = {x:0,y:0.5};
-    this.length = 1;
+    this.length = 0.1;
     this.withSprite('extendoHorn').withCameraTransform(parent.cameraTransform);
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags:['enemy']}));
   }
@@ -27,7 +23,7 @@ class ExtendoHorn extends BaseComponent {
     this.withRotation(-Math.atan2(this.baseCoords.y - this.targetCoords.y, this.baseCoords.x - this.targetCoords.x));
     this.withSize({w:this.length,h:0.02});
     if (this.length<1.5) {
-      //this.length += 0.01;
+      this.length += 0.01;
     }
   }
 
@@ -38,11 +34,40 @@ class ExtendoHorn extends BaseComponent {
   }
 }
 
+class Scale extends BaseComponent {
+  constructor(parent) {
+    super();
+    this.absolutePosition = true;
+    this.parent = parent;
+    this.withSprite('tortsnapScale').withPosition(parent.transformSnapshot).withSize({w:2/64,h:2/64}).withCameraTransform(parent.cameraTransform);
+    this.takeTransformSnapshot();
+    this.addChild(new CollisionShape(this, 'oval', 'collidee', {tags: ['enemy']}));
+  }
+
+  update() {
+    super.update();
+    if (this.transformSnapshot.x < -1 || this.transformSnapshot.x > 1) {
+      this.purge();
+    }
+  }
+
+  target(player) {
+    let targetCoords = {...player.computeRelativePosition()};
+    targetCoords.x += 1/16*(Math.random()-0/5);
+    this.addChild(new DirectionalMove(this, MathUtil.diff2v(targetCoords, this.parent.computeRelativePosition()), 1));
+    return this;
+  }
+
+  onCollide(player) {
+    player.dead = true;
+  }
+}
+
 export default class Tortsnap extends BaseComponent {
 
   constructor(parent) {
     super();
-    this.hp = 3;
+    this.hp = 1;
     this.withPosition({x:0.9,y:1/4}).withSize({w:1/2,h:1/2}).withSprite('tortsnap').withCameraTransform(parent.cameraTransform);
     this.phase = 'start'; // start, move, fall, stun, rise, dead
     //this.topHalf = new CollisionShape(this, 'rect', 'collidee', {tags: ['enemy']}).withPosition({x:0,y:0.05}).withSize({w:0.33, h:0.1});
@@ -53,8 +78,8 @@ export default class Tortsnap extends BaseComponent {
   update() {
     switch (this.phase) {
       case 'start': this.update_start(); break;
-      case 'move' : this.update_move(); break;
-      case 'fall' : this.update_fall(); break;
+      case 'extendohorn' : this.update_extendohorn(); break;
+      case 'throwScales' : this.update_throwScales(); break;
       case 'stun' : this.update_stun(); break;
     }
     super.update();
@@ -63,11 +88,22 @@ export default class Tortsnap extends BaseComponent {
   update_start() {
     this.position.x -= 0.005;
     if (this.position.x <= 0.5) {
-      this.transitionToMove();
+      this.transitionToExtendohorn();
     }
   }
 
-  update_move() {
+  update_extendohorn() {
+    if (this.extendoHorn.length>=1.5) {
+      this.transitionToThrowScales();
+    }
+  }
+
+  update_throwScales() {
+    this.nextScale--;
+    if (this.nextScale<=0) {
+      this.nextScale = 20 + this.hp*10;
+      this.addChild(new Scale(this).target(this.parent.player));
+    }
   }
 
   update_fall() {
@@ -97,17 +133,15 @@ export default class Tortsnap extends BaseComponent {
     this.phase = 'start';
   }
 
-  transitionToMove() {
-    this.parent.addChild(new ExtendoHorn(this));
+  transitionToExtendohorn() {
+    this.extendoHorn = this.parent.addChild(new ExtendoHorn(this));
     this.withSprite('tortsnapNoHorn')
-    this.phase = 'move';
+    this.phase = 'extendohorn';
   }
 
-  transitionToFall() {
-    this.ddy = -0.5;
-    this.dy = 0;
-    this.bounces = 0;
-    this.phase = 'fall';
+  transitionToThrowScales() {
+    this.phase = 'throwScales';
+    this.nextScale = 50;
   }
 
   transitionToStun() {

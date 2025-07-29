@@ -14,16 +14,17 @@ export default class AnimatedSprite extends BaseComponent {
     this.numFrames = numFrames;
     this.loopTime = params?.loopTime || 1000;
     this.startTime = new Date().getTime();
-    this.withSize(parent.computeSize());
+    this.withSize(parent.computeSize()).withCameraTransform(parent.cameraTransform);
   }
 
   update() {
     let frameNum = Math.floor((new Date().getTime()-this.startTime)%this.loopTime/(this.loopTime/this.numFrames));
     if (this.baseSpriteName) {
-      this.parent.sprite = this.baseSpriteName + (frameNum+1);
+      this.sprite = this.baseSpriteName + (frameNum+1);
     } else {
-      this.parent.sprite = this.sprites[frameNum];
+      this.sprite = this.sprites[frameNum];
     }
+    super.update();
   }
 
 }

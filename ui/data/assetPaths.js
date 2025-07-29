@@ -16,8 +16,8 @@ let spritePaths = {
 ['redButton', 'inventoryIcon'].forEach(s => spritePaths[s] = `img/${s}.png`);
 ['spikedome', 'spikedomeHurt', 'gear'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
-['ligatureFace', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
-['tortsnap', 'tortsnapNoHorn', 'extendoHorn'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['ligatureFace', 'ligatureFaceVulnerable', 'ligatureNoodles', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['tortsnap', 'tortsnapNoHorn', 'extendoHorn', 'tortsnapScale'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 
 let miniSprites = {
   whiteKing: { sheetName: 'chessPieceSheet', top: 10, height: 150, left: 0, width: 140 },
@@ -25,6 +25,9 @@ let miniSprites = {
 
 let animatedSprites = {
   ligatureFace: { sheetName: 'ligatureFace', height: 64, width: 64, frames: 6 },
+  ligatureNoodles: { sheetName: 'ligatureNoodles', height: 64, width: 64, frames: 6 },
+  ligatureNoodles_glowing: { sheetName: 'ligatureNoodles_glowing', height: 64, width: 64, frames: 6 },
+  ligatureFaceVulnerable: { sheetName: 'ligatureFaceVulnerable', height: 64, width: 64, frames: 6 },
   birdIdle: { sheetName: 'birdSheet', top: 0, left: 0, height: 32, width: 32, frames: 4, cols: 4, duration: 1000 },
   birdMove: { sheetName: 'birdSheet', top: 32, left: 0, height: 32, width: 32, frames: 4, cols: 4, duration: 1000 },
   birdFly: { sheetName: 'birdSheet', top: 96, left: 0, height: 32, width: 32, frames: 4, cols: 4, duration: 1000 },
@@ -55,6 +58,10 @@ let processedSprites = {
   shortfuse_damaged: (spriteManager) => {
     let initialShortFuse = spriteManager.getImage('shortfuse');
     return ImageUtil.applyMask(initialShortFuse, 255, 0, 0);
+  },
+  ligatureNoodles_glowing: (spriteManager) => {
+    let initialNoodles = spriteManager.getImage('ligatureNoodles');
+    return ImageUtil.applyMask(initialNoodles, 255, 0, 0);
   }
 }
 
