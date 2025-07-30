@@ -18,6 +18,7 @@ let spritePaths = {
 ['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['ligatureFace', 'ligatureFaceVulnerable', 'ligatureNoodles', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['tortsnap', 'tortsnapNoHorn', 'extendoHorn', 'tortsnapScale'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['bunny'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 
 let miniSprites = {
   whiteKing: { sheetName: 'chessPieceSheet', top: 10, height: 150, left: 0, width: 140 },
@@ -28,6 +29,8 @@ let animatedSprites = {
   ligatureNoodles: { sheetName: 'ligatureNoodles', height: 64, width: 64, frames: 6 },
   ligatureNoodles_glowing: { sheetName: 'ligatureNoodles_glowing', height: 64, width: 64, frames: 6 },
   ligatureFaceVulnerable: { sheetName: 'ligatureFaceVulnerable', height: 64, width: 64, frames: 6 },
+  bunnyRun: { sheetName: 'bunny', top: 192, height: 60, width: 60, frames: 6, cols: 4, vPad: 30},
+
   birdIdle: { sheetName: 'birdSheet', top: 0, left: 0, height: 32, width: 32, frames: 4, cols: 4, duration: 1000 },
   birdMove: { sheetName: 'birdSheet', top: 32, left: 0, height: 32, width: 32, frames: 4, cols: 4, duration: 1000 },
   birdFly: { sheetName: 'birdSheet', top: 96, left: 0, height: 32, width: 32, frames: 4, cols: 4, duration: 1000 },
@@ -37,7 +40,7 @@ let animatedSprites = {
 }
 
 Object.keys(animatedSprites).forEach(s => {
-  let {sheetName, top, left, height, width, frames, cols} = animatedSprites[s];
+  let {sheetName, top, left, height, width, frames, cols, hPad, vPad} = animatedSprites[s];
   if (!cols) {
     cols = frames;
   }
@@ -47,9 +50,15 @@ Object.keys(animatedSprites).forEach(s => {
   if (!top) {
     top = 0;
   }
+  if (!hPad) {
+    hPad = 0;
+  }
+  if (!vPad) {
+    vPad = 0;
+  }
   for (let i=0;i<frames;i++) {
-    let frameLeft = left + width*(i%cols);
-    let frameTop = top + height*Math.floor(i/cols);
+    let frameLeft = left + (width+hPad)*(i%cols);
+    let frameTop = top + (height+vPad)*Math.floor(i/cols);
     miniSprites[s+(i+1)] = {sheetName, top: frameTop, left: frameLeft, height, width};
   }
 })

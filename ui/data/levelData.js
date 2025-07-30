@@ -126,6 +126,21 @@ let levelData = [
       { type: 0, x: 0.33, y: 0.6 }
     ],
     enemyPreset: [{ type: 'tortsnap' }]
+  }, {level:21}, {level:22}, {level:23}, {level:24}, {
+    level: 25,
+    height: 1,
+    minSpace: 0,
+    maxSpace: 0,
+    cameraLock: true,
+    platformPreset: [
+      { type: 0, x: -0.33, y: 0.2 }, 
+      { type: 0, x: 0, y: 0.2 }, 
+      { type: 0, x: 0.33, y: 0.2 }, 
+      { type: 0, x: -0.33, y: 0.6 }, 
+      { type: 0, x: 0, y: 0.6 }, 
+      { type: 0, x: 0.33, y: 0.6 }
+    ],
+    enemyPreset: [{ type: 'bunny' },{ type: 'bunny' },{ type: 'bunny' }]
   },
 ]
 

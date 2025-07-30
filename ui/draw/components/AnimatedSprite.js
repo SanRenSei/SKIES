@@ -18,6 +18,8 @@ export default class AnimatedSprite extends BaseComponent {
   }
 
   update() {
+    this.withSize(this.parent.computeSize());
+    this.takeTransformSnapshot();
     let frameNum = Math.floor((new Date().getTime()-this.startTime)%this.loopTime/(this.loopTime/this.numFrames));
     if (this.baseSpriteName) {
       this.sprite = this.baseSpriteName + (frameNum+1);

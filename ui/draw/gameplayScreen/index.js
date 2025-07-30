@@ -14,6 +14,7 @@ import Fireball from "./enemies/Fireball.js";
 import Shortfuse from "./enemies/Shortfuse.js";
 import Ligature from "./enemies/Ligature.js";
 import Tortsnap from "./enemies/Tortsnap.js";
+import Bunny from "./enemies/Bunny.js";
 
 export default class GameplayScreen extends BaseComponent {
 
@@ -119,6 +120,7 @@ export default class GameplayScreen extends BaseComponent {
   generateEnemies(levelInfo) {
     levelInfo.enemyPreset?.forEach(e => {
       switch (e.type) {
+        case 'bunny' : this.addChild(new Bunny(this));
         case 'fireball' : this.addChild(new Fireball(this).withPosition({x:e.x,y:e.y})); break;
         case 'ligature' : this.addChild(new Ligature(this)); break;
         case 'shortfuse' : this.addChild(new Shortfuse(this)); break;

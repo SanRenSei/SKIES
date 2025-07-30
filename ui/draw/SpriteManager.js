@@ -48,11 +48,14 @@ class SpriteManager {
   }
 
   drawImage(ctx, image, sx, sy, sw, sh, dx, dy, dw, dh, r=0, a=1) {
-    if (r == 0) {
+    if (r == 0 && dw > 0 && dh > 0) {
       ctx.globalAlpha = a;
       ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
       ctx.globalAlpha = 1;
       return;
+    }
+    if (dw < 0) {
+      console.log('REVERSE')
     }
 
     let centerX = dx + dw / 2;
@@ -61,6 +64,11 @@ class SpriteManager {
     ctx.save();
     ctx.translate(centerX, centerY);
     ctx.rotate(r);
+    if (dw < 0 || dh < 0) {
+      ctx.scale(Math.sign(dw), Math.sign(dh));
+      dw = Math.abs(dw);
+      dh = Math.abs(dh);
+    }
     ctx.globalAlpha = a;
     ctx.drawImage(image, sx, sy, sw, sh, -dw / 2, -dh / 2, dw, dh);
     ctx.restore();
