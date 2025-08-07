@@ -113,7 +113,10 @@ export default class GameplayScreen extends BaseComponent {
 
   generatePresetPlatforms(levelInfo) {
     levelInfo.platformPreset.forEach(p => {
-      this.addChild(PlatformTypes.platformFromType(p.type).withPosition({x:p.x,y:p.y}).withCameraTransform(this.cameraTransform));
+      let child = this.addChild(PlatformTypes.platformFromType(p.type).withPosition({x:p.x,y:p.y}).withCameraTransform(this.cameraTransform));
+      if (p.w) {
+        child.withSize({w:p.w});
+      }
     })
   }
 

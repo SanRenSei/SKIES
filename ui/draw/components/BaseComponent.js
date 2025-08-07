@@ -46,7 +46,7 @@ export default class BaseComponent {
   }
 
   withPosition(initialPosition) {
-    this.position = initialPosition;
+    this.position = {...this.position, ...initialPosition};
     this.takeTransformSnapshot();
     return this;
   }
@@ -86,7 +86,8 @@ export default class BaseComponent {
     if (typeof initialSize == 'number') {
       initialSize = {w:initialSize, h:initialSize};
     }
-    this.size = initialSize;
+    this.size = {...this.size, ...initialSize};
+    this.takeTransformSnapshot();
     return this;
   }
 
