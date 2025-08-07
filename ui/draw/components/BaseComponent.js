@@ -7,7 +7,7 @@ export default class BaseComponent {
 
   constructor(parent=null) {
     this.parent = parent;
-    this.cameraTransform = null;
+    this.cameraTransform = this.parent?.cameraTransform;
     this.children = [];
     this.display = true;
     this.drawPriority = 0;

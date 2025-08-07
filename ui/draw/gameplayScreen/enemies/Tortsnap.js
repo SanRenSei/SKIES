@@ -76,6 +76,7 @@ class Scale extends BaseComponent {
 class SpikyChestnut extends BaseComponent {
   constructor(parent) {
     super(parent);
+    this.active = true;
     this.extendoHorn = null;
     this.withSprite('spikyChestnut').withPosition({x:-1,y:-1}).withSize({w:1/8,h:1/8}).withCameraTransform(parent.cameraTransform);
     this.takeTransformSnapshot();

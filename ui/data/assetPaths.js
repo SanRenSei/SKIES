@@ -18,7 +18,7 @@ let spritePaths = {
 ['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['ligatureFace', 'ligatureFaceVulnerable', 'ligatureNoodles', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['tortsnap', 'tortsnapNoHorn', 'extendoHorn', 'tortsnapScale', 'tortsnapHead', 'spikyChestnut'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
-['bunny'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['bunny', 'carrot', 'egg'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 
 let miniSprites = {
   whiteKing: { sheetName: 'chessPieceSheet', top: 10, height: 150, left: 0, width: 140 },

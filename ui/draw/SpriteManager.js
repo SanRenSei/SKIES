@@ -53,9 +53,6 @@ class SpriteManager {
       ctx.globalAlpha = 1;
       return;
     }
-    if (dw < 0) {
-      console.log('REVERSE')
-    }
 
     let centerX = dx + dw / 2;
     let centerY = dy + dh / 2;

@@ -11,6 +11,18 @@ export default class CoordUtil {
     return MathUtil.add2v(start, MathUtil.mult2v(direction, velocity/distance));
   }
 
+  static applyRotation(start, target, velocity) {
+    const TAU = Math.PI * 2;
+    start = ((start % TAU) + TAU) % TAU;
+    target = ((target % TAU) + TAU) % TAU;
+    let diff = target - start;
+    if (diff > Math.PI) diff -= TAU;
+    if (diff < -Math.PI) diff += TAU;
+    if (diff > velocity) diff = velocity;
+    if (diff < -velocity) diff = -velocity;
+    return ((start + diff) % TAU + TAU) % TAU;
+  }
+
   static applyMovementNoStop(start, target, velocity) {
     let direction = MathUtil.diff2v(target, start);
     let distance = MathUtil.get2vMag(direction);
