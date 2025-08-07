@@ -39,7 +39,7 @@ class PlayerMovement extends BaseComponent {
   }
   update() {
     super.update();
-    let timestep = 0.05;
+    let timestep = this.parent.slowed ? 0.025 : 0.05;
     if (this.dx) {
       this.parent.position.x += this.dx*timestep;
       return;
@@ -62,6 +62,7 @@ export default class Player extends BaseComponent {
     this.withPosition({x:0,y:0.05}).withSize({w:50/800,h:50/800}).withCameraTransform(parent.cameraTransform);
     this.snaredBy = null;
     this.canJump = false;
+    this.slowed = false;
     this.dead = false;
     this.dy = 0;
     setTimeout(() => {this.canJump = true}, 100);

@@ -18,8 +18,14 @@ class Collider {
   addShape(shape) {
     if (shape.type=='collider' || shape.type=='both') {
       this.colliders.add(shape);
+      if (typeof shape.collidesWith == 'string') {
+        shape.collidesWith = [shape.collidesWith];
+      }
     }
     if (shape.type=='collidee' || shape.type=='both') {
+      if (typeof shape.tags == 'string') {
+        shape.tags = [shape.tags];
+      }
       shape.tags.forEach(t => this.addCollidee(t, shape));
     }
   }
@@ -42,6 +48,17 @@ class Collider {
         })
       })
     })
+  }
+
+  getShapeCollisions(collisionShape) {
+    return collisionShape.collidesWith.flatMap(t => {
+      if (!this.collidees[t]) {
+        return [];
+      }
+      return this.collidees[t].filter(collidee => {
+        return CoordUtil.checkShapeCollision(collisionShape.getCollisionShape(), collidee.getCollisionShape())
+      });
+    });
   }
 
 }

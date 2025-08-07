@@ -5,7 +5,6 @@ class SpriteManager {
   constructor() {
     this.timeOffset = new Date().getTime();
     this.sprites = {};
-    this.drawingQueue = [];
   }
 
   load(spriteName) {
@@ -84,43 +83,6 @@ class SpriteManager {
       let s = miniSprites[spriteName];
       this.drawImage(ctx, this.getImage(miniSprites[spriteName].sheetName), s.left, s.top, s.width, s.height, left, top, width, height, rotation, alpha);
     }
-  }
-
-  queueSprite(spriteName, priority, left, top, width, height, alpha=1) {
-    this.drawingQueue.push({ spriteName, priority, left, top, width, height, alpha });
-  }
-
-  queueText(text, priority, x, y) {
-    this.drawingQueue.push({text, priority, x, y});
-  }
-
-  drawQueue(ctx) {
-    this.drawingQueue.sort((a, b) => {
-      const aPriority = Array.isArray(a.priority) ? a.priority : [a.priority];
-      const bPriority = Array.isArray(b.priority) ? b.priority : [b.priority];
-    
-      const len = Math.min(aPriority.length, bPriority.length);
-      for (let i = 0; i < len; i++) {
-        if (aPriority[i] !== bPriority[i]) {
-          return aPriority[i] - bPriority[i];
-        }
-      }
-      return aPriority.length - bPriority.length;
-    });
-
-    window.drawingQueue = (this.drawingQueue);
-
-    for (let toDraw of this.drawingQueue) {
-      if (toDraw.spriteName) {
-        this.drawSprite(ctx, toDraw.spriteName, toDraw.left, toDraw.top, toDraw.width, toDraw.height, toDraw.alpha);
-      }
-      if (toDraw.text) {
-        let textWidth = ctx.measureText(toDraw.text);
-        ctx.fillText(toDraw.text, toDraw.x - textWidth.width/2, toDraw.y);
-      }
-    }
-
-    this.drawingQueue = [];
   }
 
 }

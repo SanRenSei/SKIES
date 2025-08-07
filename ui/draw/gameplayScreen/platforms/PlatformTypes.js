@@ -5,6 +5,7 @@ import MovingPlatform from "./MovingPlatform.js";
 import TeleportingPlatform from "./TeleportingPlatform.js";
 import DoorPlatform from "./DoorPlatform.js";
 import FirePlatform from "./FirePlatform.js";
+import MuddyPlatform from "./MuddyPlatform.js";
 
 export default class PlatformTypes {
 
@@ -22,6 +23,7 @@ export default class PlatformTypes {
       case 3: return new TeleportingPlatform();
       case 4: return new DoorPlatform();
       case 5: return new FirePlatform();
+      case 6: return new MuddyPlatform();
     }
     throw 'No platform for type ' + platformTypeId;
   }

@@ -118,12 +118,17 @@ let levelData = [
     maxSpace: 0,
     cameraLock: true,
     platformPreset: [
-      { type: 0, x: -0.33, y: 0.2 }, 
-      { type: 0, x: 0, y: 0.2 }, 
-      { type: 0, x: 0.33, y: 0.2 }, 
-      { type: 0, x: -0.33, y: 0.6 }, 
-      { type: 0, x: 0, y: 0.6 }, 
-      { type: 0, x: 0.33, y: 0.6 }
+      { type: 6, x: -0.33, y: 0.2 }, 
+      { type: 6, x: 0, y: 0.2 }, 
+      { type: 6, x: 0.33, y: 0.2 }, 
+      { type: 6, x: -0.16, y: 0.3 }, 
+      { type: 6, x: 0.16, y: 0.3 }, 
+      { type: 6, x: 0.5, y: 0.3 }, 
+      { type: 6, x: -0.5, y: 0.3 }, 
+      { type: 0, x: -0.33, y: 0.45 }, 
+      { type: 0, x: 0.33, y: 0.45 },
+      { type: 0, x: 0.5, y: 0.7 }, 
+      { type: 0, x: -0.5, y: 0.7 }, 
     ],
     enemyPreset: [{ type: 'tortsnap' }]
   }, {level:21}, {level:22}, {level:23}, {level:24}, {

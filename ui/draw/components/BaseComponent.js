@@ -5,13 +5,12 @@ import spriteManager from '../SpriteManager.js';
 
 export default class BaseComponent {
 
-  
-  constructor() {
-    this.parent = null;
+  constructor(parent=null) {
+    this.parent = parent;
     this.cameraTransform = null;
     this.children = [];
     this.display = true;
-    this.alpha = 1;
+    this.drawPriority = 0;
     this.absolutePosition = null;
     this.position = {x:0,y:0};
     this.rotation = 0;
@@ -23,11 +22,21 @@ export default class BaseComponent {
   }
 
   static createSprite(spriteName, transform) {
-    return new BaseComponent().withSprite(spriteName).withPosition(transform).withSize(transform).withRotation(transform.r || 0);
+    return new BaseComponent().withSprite(spriteName).withTransform(transform);
   }
 
   withChild(child) {
     this.addChild(child);
+    return this;
+  }
+
+  withDisplay(d) {
+    this.display = d;
+    return this;
+  }
+
+  withPriority(p) {
+    this.drawPriority = p;
     return this;
   }
 
@@ -38,6 +47,7 @@ export default class BaseComponent {
 
   withPosition(initialPosition) {
     this.position = initialPosition;
+    this.takeTransformSnapshot();
     return this;
   }
 
@@ -62,6 +72,13 @@ export default class BaseComponent {
 
   withRotation(initialRotation) {
     this.rotation = initialRotation;
+    return this;
+  }
+
+  withTransform(transform) {
+    this.withPosition(transform);
+    this.withSize(transform);
+    this.withRotation(transform.r || 0);
     return this;
   }
 
@@ -137,7 +154,11 @@ export default class BaseComponent {
     return this.sprite;
   }
 
-  draw(ctx) {
+  draw(ctx, queued = false) {
+    if (this.drawPriority && !queued) {
+      drawManager.addToDrawQueue(this);
+      return;
+    }
     if (this.display) {
       if (this.computeSprite()!=null) {
         let drawInfo = this.computeDrawInfo();
@@ -145,16 +166,6 @@ export default class BaseComponent {
       }
     }
     this.children.forEach(c => c.draw(ctx));
-  }
-
-  queueDraw(priority) {
-    if (this.display) {
-      if (this.computeSprite()!=null) {
-        let drawInfo = this.computeDrawInfo();
-        spriteManager.queueSprite(this.computeSprite(), priority, drawInfo.x - drawInfo.w/2, drawInfo.y - drawInfo.h/2, drawInfo.w, drawInfo.h);
-      }
-    }
-    this.children.forEach(c => c.queueDraw(priority));
   }
 
   getRectShape() {
