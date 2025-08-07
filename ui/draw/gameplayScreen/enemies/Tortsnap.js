@@ -126,8 +126,6 @@ class ExtendoNeck extends BaseComponent {
   }
 
   onCollide(player) {
-    console.log('HIT NECK')
-    //player.dead = true;
   }
 }
 
@@ -227,10 +225,7 @@ export default class Tortsnap extends BaseComponent {
   }
 
   update_damaged() {
-    console.log(this.position)
-    console.log(this.transformSnapshot);
     this.withPosition({x:this.position.x, y:this.position.y - 0.005});
-    //this.head.withPosition({x:this.head.position.x, y:this.head.position.y - 0.005});
     if (this.head.transformSnapshot.y < -0.5) {
       if (this.hp>0) {
         this.transitionToStart();
@@ -269,6 +264,7 @@ export default class Tortsnap extends BaseComponent {
   transitionToDig() {
     this.dx = -0.25;
     this.dy = 0.25;
+    this.extendoHorn.purge();
     this.withSprite('tortsnap');
     this.phase = 'dig';
   }
