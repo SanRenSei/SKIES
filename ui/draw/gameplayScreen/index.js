@@ -15,21 +15,22 @@ import Shortfuse from "./enemies/Shortfuse.js";
 import Ligature from "./enemies/Ligature.js";
 import Tortsnap from "./enemies/Tortsnap.js";
 import Bunny from "./enemies/Bunny.js";
+import drawManager from "../DrawManager.js";
 
 export default class GameplayScreen extends BaseComponent {
 
   constructor({levelNum}) {
     super();
     this.absolutePosition = true;
-    this.cameraTop = 1;
+    this.cameraTop = 2.28;
     this.cameraTransform = (coords) => {
-      return {x:coords.x*600+400, y: (this.cameraTop-coords.y)*600, w: coords.w*600, h: coords.h*600, r: coords.r, s: coords.s};
+      return {x:coords.x*600+drawManager.width/2, y: (this.cameraTop-coords.y)*600, w: coords.w*600, h: coords.h*600, r: coords.r, s: coords.s};
     }
-    this.addChild(BaseComponent.createSprite('backgroundGround', {x:0,y:0.5,w:1.33,h:1}).withCameraTransform(this.cameraTransform));
+    this.addChild(BaseComponent.createSprite('backgroundGround', {x:0,y:0.72,w:1.33,h:2}).withCameraTransform(this.cameraTransform));
     this.backgroundLoops = [
-      BaseComponent.createSprite('backgroundLoop', {x:0,y:1.5,w:1.33,h:1}).withCameraTransform(this.cameraTransform),
-      BaseComponent.createSprite('backgroundLoop', {x:0,y:2.5,w:1.33,h:1}).withCameraTransform(this.cameraTransform),
-      BaseComponent.createSprite('backgroundLoop', {x:0,y:3.5,w:1.33,h:1}).withCameraTransform(this.cameraTransform)
+      BaseComponent.createSprite('backgroundLoop', {x:0,y:2.72,w:1.33,h:2}).withCameraTransform(this.cameraTransform),
+      BaseComponent.createSprite('backgroundLoop', {x:0,y:4.72,w:1.33,h:2}).withCameraTransform(this.cameraTransform),
+      BaseComponent.createSprite('backgroundLoop', {x:0,y:6.72,w:1.33,h:2}).withCameraTransform(this.cameraTransform)
     ]
     this.addChildren(this.backgroundLoops);
     this.player = new Player(this);
@@ -56,19 +57,19 @@ export default class GameplayScreen extends BaseComponent {
     if (this.cameraLock) {
       return;
     }
-    this.cameraTop = Math.max(this.cameraTop, 0.3 + this.player.position.y);
+    this.cameraTop = Math.max(this.cameraTop, 0.6 + this.player.position.y);
   }
 
   updateBackground() {
     this.backgroundLoops.forEach(bl => {
-      if (bl.computeDrawInfo().y > 1200) {
-        bl.position.y += 3;
+      if (bl.computeDrawInfo().y > 2*drawManager.height) {
+        bl.position.y += 6;
       }
     })
   }
 
   checkLoss() {
-    if (!this.done && this.player.position.y < this.cameraTop - 1.1) {
+    if (!this.done && this.player.computeDrawInfo().y > 1.1*drawManager.height) {
       this.player.stopMoving();
       this.addChild(new LosePopup());
       this.done = true;

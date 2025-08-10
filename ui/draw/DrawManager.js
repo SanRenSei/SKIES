@@ -4,12 +4,15 @@ import RootComponent from './root/index.js';
 class DrawManager {
 
   constructor() {
-    this.root = new RootComponent();
+    this.root = null;
     this.drawingQueue = [];
   }
 
   draw(ctx) {
     ctx.clearRect(0,0,this.width,this.height);
+    if (!this.root) {
+      return;
+    }
     this.root.takeTransformSnapshot();
     this.root.draw(ctx);
     this.drawQueue(ctx);

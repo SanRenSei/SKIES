@@ -1,11 +1,12 @@
 import BaseComponent from "../components/BaseComponent.js";
+import drawManager from "../DrawManager.js";
 import TitleScreen from "../titleScreen/index.js";
 
 export default class RootComponent extends BaseComponent {
 
   constructor() {
     super();
-    this.withPosition({x:400, y:300}).withSize({w:800, h:600});
+    this.withPosition({x:drawManager.width/2, y:drawManager.height/2}).withSize({w:drawManager.width, h:drawManager.height});
     this.addChild(new TitleScreen());
   }
 

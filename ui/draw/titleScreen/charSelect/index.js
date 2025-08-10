@@ -5,17 +5,18 @@ import playerChars from "../../../data/playerChars.js";
 import AnimatedSprite from "../../components/AnimatedSprite.js";
 import Oval from "../../components/Oval.js";
 import gameState from "../../../state/GameState.js";
+import drawManager from "../../DrawManager.js";
 
 export default class CharSelect extends BaseComponent {
 
   constructor() {
     super();
     this.selectedChar = gameState.playerAvatar;
-    this.addChild(new Rect({fillColor: '#FFAEC9'}).withSize({w:400,h:300}));
-    this.addChild(new Rect({fillColor: '#FFC90E'}).withPosition({x:0,y:-150}).withSize({w:400,h:50})
+    this.addChild(new Rect({fillColor: '#FFAEC9'}).withSize({w:drawManager.width/2,h:drawManager.height/2}));
+    this.addChild(new Rect({fillColor: '#FFC90E'}).withPosition({x:0,y:-drawManager.height/4+25}).withSize({w:drawManager.width/2,h:50})
       .withChild(new Text('Character Select').withSize({w:200,h:50}))
     );
-    this.addChild(new Rect({fillColor: '#B5E61D'}).withPosition({x:0,y:150}).withSize({w:400,h:50})
+    this.addChild(new Rect({fillColor: '#B5E61D'}).withPosition({x:0,y:drawManager.height/4-25}).withSize({w:drawManager.width/2,h:50})
       .withChild(new Text('BACK').withSize({w:50,h:50}))
       .onClick(() => {
         this.purge();

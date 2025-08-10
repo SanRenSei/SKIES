@@ -26,14 +26,14 @@
 
       @media screen and (orientation: portrait) {
           canvas {
-              width: 100vw;
-              height: calc(100vw * 3 / 4);
+            width: calc(100hv / 15 * 8);
+            height: 100vh;
           }
       }
 
       @media screen and (orientation: landscape) {
           canvas {
-              width: calc(100vh * 4 / 3);
+              width: calc(100hv / 15 * 8);
               height: 100vh;
           }
       }
@@ -41,7 +41,7 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="mainCanvas" height="600" width="800"></canvas>
+      <canvas id="mainCanvas" height="1500" width="800"></canvas>
     </div>
   </body>
   <script src="index.js" type="module"></script>

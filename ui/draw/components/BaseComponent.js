@@ -56,6 +56,9 @@ export default class BaseComponent {
       this.cameraTransform = cameraTransform;
       return this;
     }
+    if (cameraTransform == null) {
+      return;
+    }
     this.cameraTransform = (coords) => {
       let {x,y,w,h,s,r} = coords;
       let drawWidth = 800, drawHeight = 600;
