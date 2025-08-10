@@ -42,10 +42,15 @@ class PlayerMovement extends BaseComponent {
     let timestep = this.parent.slowed ? 0.025 : 0.05;
     if (this.dx) {
       this.parent.position.x += this.dx*timestep;
+      this.checkBounds();
       return;
     }
     let dx = (this.targetX - this.parent.position.x);
     this.parent.position.x += dx*timestep;
+    this.checkBounds();
+  }
+
+  checkBounds() {
     if (this.parent.position.x < -0.66) {
       this.parent.position.x = -0.66;
     }

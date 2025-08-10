@@ -12,7 +12,7 @@ let spritePaths = {
   'beachballIconRight1', 'beachballIconRight2',  'beachballIconRight3', 'beachballIconRight4',
   'eightballIconLeft', 'eightballIconRight', 'bunnyIconLeft', 'bunnyIconRight', 'pumpkinIconLeft', 'pumpkinIconRight'
 ].forEach(s => spritePaths[s] = `img/avatars/${s}.png`);
-['platform', 'goalPlatform', 'ghostPlatform', 'movingPlatform', 'muddyPlatform', 'teleportingPlatform', 'doorPlatform', 'doorPlatformTransparent', 'firePlatform'].forEach(s => spritePaths[s] = `img/platforms/${s}.png`);
+['platformsSheet', 'goalPlatform', 'doorPlatform', 'doorPlatformTransparent'].forEach(s => spritePaths[s] = `img/platforms/${s}.png`);
 ['redButton', 'inventoryIcon'].forEach(s => spritePaths[s] = `img/${s}.png`);
 ['spikedome', 'spikedomeHurt', 'gear'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
@@ -21,7 +21,12 @@ let spritePaths = {
 ['bunny', 'carrot', 'egg'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 
 let miniSprites = {
-  whiteKing: { sheetName: 'chessPieceSheet', top: 10, height: 150, left: 0, width: 140 },
+  platform: { sheetName: 'platformsSheet', top: 16, height: 79, left: 29, width: 270},
+  ghostPlatform: { sheetName: 'platformsSheet', top: 135, height: 76, left: 30, width: 267},
+  movingPlatform: { sheetName: 'platformsSheet', top: 248, height: 70, left: 29, width: 279},
+  teleportingPlatform: { sheetName: 'platformsSheet', top: 370, height: 137, left: 56, width: 223},
+  firePlatform: { sheetName: 'platformsSheet', top: 15, height: 153, left: 374, width: 280},
+  swampPlatform: { sheetName: 'platformsSheet', top: 270, height: 97, left: 375, width: 268},
   tortsnapHeadClosed: { sheetName: 'tortsnapHead', top: 6, height: 43, left: 5, width: 41},
   tortsnapHeadOpen: { sheetName: 'tortsnapHead', top: 6, height: 43, left: 62, width: 41},
   tortsnapHeadNeck: { sheetName: 'tortsnapHead', top: 3, height: 64, left: 113, width: 182},

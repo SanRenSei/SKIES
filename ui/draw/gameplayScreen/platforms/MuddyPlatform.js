@@ -5,7 +5,7 @@ export default class MuddyPlatform extends BaseComponent {
 
   constructor() {
     super();
-    this.withSize({w:75/600,h:0.02}).withSprite('muddyPlatform');
+    this.withSize({w:75/600,h:0.02}).withSprite('swampPlatform');
     this.addChild(new CollisionShape(this, 'rect', 'collidee', {tags: ['platform']}));
   }
 
