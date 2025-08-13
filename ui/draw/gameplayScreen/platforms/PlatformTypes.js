@@ -1,4 +1,3 @@
-import BaseComponent from "../../components/BaseComponent.js";
 import NormalPlatform from "./NormalPlatform.js";
 import GhostPlatform from "./GhostPlatform.js";
 import MovingPlatform from "./MovingPlatform.js";

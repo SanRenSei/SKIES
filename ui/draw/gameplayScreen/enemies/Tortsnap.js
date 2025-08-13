@@ -1,10 +1,10 @@
 import CoordUtil from "../../../util/coordUtil.js";
 import MathUtil from "../../../util/mathUtil.js";
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import DirectionalMove from "../../components/DirectionalMove.js";
-import FadeOut from "../../components/FadeOut.js";
-import PositionTween from "../../components/PositionTween.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
+import DirectionalMove from "../../../core/components/DirectionalMove.js";
+import FadeOut from "../../../core/components/FadeOut.js";
+import PositionTween from "../../../core/components/PositionTween.js";
 import DoorPlatform from "../platforms/DoorPlatform.js";
 import GoalPlatform from "../platforms/GoalPlatform.js";
 

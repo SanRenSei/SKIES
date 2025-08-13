@@ -1,6 +1,6 @@
-import BaseComponent from "../components/BaseComponent.js";
-import Ring from "../components/Ring.js";
-import Text from "../components/Text.js";
+import BaseComponent from "../../core/components/BaseComponent.js";
+import Ring from "../../core/components/Ring.js";
+import Text from "../../core/components/Text.js";
 
 export default class LevelButton extends BaseComponent {
 

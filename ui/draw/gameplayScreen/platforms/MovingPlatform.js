@@ -1,4 +1,4 @@
-import CollisionShape from "../../components/CollisionShape.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
 import NormalPlatform from "./NormalPlatform.js";
 
 export default class MovingPlatform extends NormalPlatform {

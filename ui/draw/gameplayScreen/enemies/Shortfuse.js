@@ -1,11 +1,11 @@
 import MathUtil from "../../../util/mathUtil.js";
-import AnimatedSprite from "../../components/AnimatedSprite.js";
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import DirectionalMove from "../../components/DirectionalMove.js";
-import PositionTracker from "../../components/PositionTracker.js";
-import Shaker from "../../components/Shaker.js";
-import TargetMove from "../../components/TargetMove.js";
+import AnimatedSprite from "../../../core/components/AnimatedSprite.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
+import DirectionalMove from "../../../core/components/DirectionalMove.js";
+import PositionTracker from "../../../core/components/PositionTracker.js";
+import Shaker from "../../../core/components/Shaker.js";
+import TargetMove from "../../../core/components/TargetMove.js";
 import GoalPlatform from "../platforms/GoalPlatform.js";
 
 class BottomWall extends BaseComponent {

@@ -1,10 +1,8 @@
-import BaseComponent from "../components/BaseComponent.js";
-import CollisionShape from "../components/CollisionShape.js";
-import Gravity from "../components/Gravity.js";
-import Oval from "../components/Oval.js";
-import Rect from "../components/Rect.js";
-import Text from "../components/Text.js";
-import drawManager from "../DrawManager.js";
+import BaseComponent from "../../core/components/BaseComponent.js";
+import Oval from "../../core/components/Oval.js";
+import Rect from "../../core/components/Rect.js";
+import Text from "../../core/components/Text.js";
+import drawManager from "../../core/DrawManager.js";
 import LevelSelectScreen from "../levelSelectScreen/index.js";
 import GameplayScreen from "./index.js";
 

@@ -1,11 +1,11 @@
 import playerChars from "../../data/playerChars.js";
 import featureFlags from "../../state/FeatureFlags.js";
 import gameState from "../../state/GameState.js";
-import AnimatedSprite from "../components/AnimatedSprite.js";
-import BaseComponent from "../components/BaseComponent.js";
-import CollisionShape from "../components/CollisionShape.js";
-import Gravity from "../components/Gravity.js";
-import Text from "../components/Text.js";
+import AnimatedSprite from "../../core/components/AnimatedSprite.js";
+import BaseComponent from "../../core/components/BaseComponent.js";
+import CollisionShape from "../../core/components/CollisionShape.js";
+import Gravity from "../../core/components/Gravity.js";
+import Text from "../../core/components/Text.js";
 
 class PlayerMovement extends BaseComponent {
   constructor(parent) {

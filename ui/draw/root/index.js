@@ -1,5 +1,5 @@
-import BaseComponent from "../components/BaseComponent.js";
-import drawManager from "../DrawManager.js";
+import BaseComponent from "../../core/components/BaseComponent.js";
+import drawManager from "../../core/DrawManager.js";
 import TitleScreen from "../titleScreen/index.js";
 
 export default class RootComponent extends BaseComponent {

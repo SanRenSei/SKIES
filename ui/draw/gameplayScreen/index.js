@@ -1,4 +1,4 @@
-import BaseComponent from "../components/BaseComponent.js";
+import BaseComponent from "../../core/components/BaseComponent.js";
 import BasePlatform from "./platforms/BasePlatform.js";
 import Player from "./Player.js";
 
@@ -15,7 +15,10 @@ import Shortfuse from "./enemies/Shortfuse.js";
 import Ligature from "./enemies/Ligature.js";
 import Tortsnap from "./enemies/Tortsnap.js";
 import Bunny from "./enemies/Bunny.js";
-import drawManager from "../DrawManager.js";
+import drawManager from "../../core/DrawManager.js";
+import WingedCageSpawner from "./enemies/WingedCageSpawner.js";
+import FireAngel from "./enemies/FireAngel.js";
+import IceAngel from "./enemies/IceAngel.js";
 
 export default class GameplayScreen extends BaseComponent {
 
@@ -124,8 +127,11 @@ export default class GameplayScreen extends BaseComponent {
   generateEnemies(levelInfo) {
     levelInfo.enemyPreset?.forEach(e => {
       switch (e.type) {
-        case 'bunny' : this.addChild(new Bunny(this));
+        case 'bunny' : this.addChild(new Bunny(this)); break;
+        case 'cageSpawner' : this.addChild(new WingedCageSpawner(this)); break;
+        case 'fireAngel' : this.addChild(new FireAngel(this)); break;
         case 'fireball' : this.addChild(new Fireball(this).withPosition({x:e.x,y:e.y})); break;
+        case 'iceAngel' : this.addChild(new IceAngel(this)); break;
         case 'ligature' : this.addChild(new Ligature(this)); break;
         case 'shortfuse' : this.addChild(new Shortfuse(this)); break;
         case 'spikedome' : this.addChild(new Spikedome(this)); break;

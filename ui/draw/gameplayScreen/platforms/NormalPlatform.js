@@ -1,6 +1,5 @@
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import Gravity from "../../components/Gravity.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
 
 export default class NormalPlatform extends BaseComponent {
 

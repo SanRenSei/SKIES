@@ -1,5 +1,5 @@
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
 import WinPopup from "../WinPopup.js";
 
 export default class GoalPlatform extends BaseComponent {

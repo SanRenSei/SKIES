@@ -38,14 +38,9 @@ class Collider {
   checkCollisions() {
     this.colliders.forEach(collider => {
       collider.collidesWith.forEach(t => {
-        this.collidees[t] && this.collidees[t].forEach(collidee => {
-          if (collider == collidee) {
-            return;
-          }
-          if (CoordUtil.checkShapeCollision(collider.getCollisionShape(), collidee.getCollisionShape())) {
-            eventDispatcher.dispatchEvent({type:'collision', collider, collidee});
-          }
-        })
+        this.collidees[t] && [...this.collidees[t]].filter(collidee => collidee!=collider)
+          .filter(collidee => CoordUtil.checkShapeCollision(collider.getCollisionShape(), collidee.getCollisionShape()))
+          .forEach(collidee => eventDispatcher.dispatchEvent({type:'collision', collider, collidee}));
       })
     })
   }

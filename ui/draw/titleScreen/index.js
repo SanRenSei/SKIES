@@ -1,7 +1,7 @@
-import BaseComponent from "../components/BaseComponent.js";
-import RoundedRect from '../components/RoundedRect.js';
-import Text from "../components/Text.js";
-import drawManager from "../DrawManager.js";
+import BaseComponent from "../../core/components/BaseComponent.js";
+import RoundedRect from '../../core/components/RoundedRect.js';
+import Text from "../../core/components/Text.js";
+import drawManager from "../../core/DrawManager.js";
 import LevelSelectScreen from "../levelSelectScreen/index.js";
 import CharSelect from "./charSelect/index.js";
 

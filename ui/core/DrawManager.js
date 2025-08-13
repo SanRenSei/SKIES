@@ -1,5 +1,5 @@
 import collider from '../event/Collider.js';
-import RootComponent from './root/index.js';
+import RootComponent from '../draw/root/index.js';
 
 class DrawManager {
 

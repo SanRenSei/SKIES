@@ -18,7 +18,8 @@ let spritePaths = {
 ['fireball', 'shortfuse', 'horizontalWall', 'verticalWall', 'electricSquare', 'crosshairs'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['ligatureFace', 'ligatureFaceVulnerable', 'ligatureNoodles', 'greenCage', 'redCage', 'stringyDoomL', 'stringyDoomR'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 ['tortsnap', 'tortsnapNoHorn', 'extendoHorn', 'tortsnapScale', 'tortsnapHead', 'spikyChestnut'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
-['bunny', 'carrot', 'egg'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['bunny', 'carrot', 'egg', 'blackCage', 'cageWingsSheet'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
+['fireAngel', 'iceAngel'].forEach(s => spritePaths[s] = `img/enemies/${s}.png`);
 
 let miniSprites = {
   platform: { sheetName: 'platformsSheet', top: 16, height: 79, left: 29, width: 270},
@@ -38,6 +39,7 @@ let animatedSprites = {
   ligatureNoodles_glowing: { sheetName: 'ligatureNoodles_glowing', height: 64, width: 64, frames: 6 },
   ligatureFaceVulnerable: { sheetName: 'ligatureFaceVulnerable', height: 64, width: 64, frames: 6 },
   bunnyRun: { sheetName: 'bunny', top: 192, height: 60, width: 60, frames: 6, cols: 4, vPad: 30},
+  cageWings: { sheetName: 'cageWingsSheet', width: 64, height: 32, frames: 2, cols: 1},
 }
 
 Object.keys(animatedSprites).forEach(s => {

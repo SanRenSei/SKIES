@@ -1,10 +1,10 @@
-import AnimatedSprite from "../../components/AnimatedSprite.js";
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import DirectionalMove from "../../components/DirectionalMove.js";
-import FadeIn from "../../components/FadeIn.js";
-import MaterializeUp from "../../components/MaterializeUp.js";
-import TiledSprite from "../../components/TiledSprite.js";
+import AnimatedSprite from "../../../core/components/AnimatedSprite.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
+import DirectionalMove from "../../../core/components/DirectionalMove.js";
+import FadeIn from "../../../core/components/FadeIn.js";
+import MaterializeUp from "../../../core/components/MaterializeUp.js";
+import TiledSprite from "../../../core/components/TiledSprite.js";
 import GoalPlatform from "../platforms/GoalPlatform.js";
 import NormalPlatform from "../platforms/NormalPlatform.js";
 

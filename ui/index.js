@@ -2,8 +2,8 @@
 import polyfill from './util/arrayUtil.js';
 polyfill();
 
-import drawManager from './draw/DrawManager.js';
-import preloadManager from './draw/PreloadManager.js';
+import drawManager from './core/DrawManager.js';
+import preloadManager from './core/PreloadManager.js';
 import deviceTilt from './event/DeviceTilt.js';
 import mouse from './event/Mouse.js';
 import featureFlags from './state/FeatureFlags.js';

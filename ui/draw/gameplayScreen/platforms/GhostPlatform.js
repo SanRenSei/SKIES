@@ -1,6 +1,4 @@
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import Gravity from "../../components/Gravity.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
 
 export default class GhostPlatform extends BaseComponent {
 

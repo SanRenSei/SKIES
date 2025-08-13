@@ -1,11 +1,11 @@
-import BaseComponent from "../../components/BaseComponent.js";
-import Rect from "../../components/Rect.js";
-import Text from "../../components/Text.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import Rect from "../../../core/components/Rect.js";
+import Text from "../../../core/components/Text.js";
 import playerChars from "../../../data/playerChars.js";
-import AnimatedSprite from "../../components/AnimatedSprite.js";
-import Oval from "../../components/Oval.js";
+import AnimatedSprite from "../../../core/components/AnimatedSprite.js";
+import Oval from "../../../core/components/Oval.js";
 import gameState from "../../../state/GameState.js";
-import drawManager from "../../DrawManager.js";
+import drawManager from "../../../core/DrawManager.js";
 
 export default class CharSelect extends BaseComponent {
 

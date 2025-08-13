@@ -1,6 +1,6 @@
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import PositionTracker from "../../components/PositionTracker.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
+import PositionTracker from "../../../core/components/PositionTracker.js";
 
 export default class Fireball extends BaseComponent {
 

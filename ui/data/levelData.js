@@ -145,8 +145,23 @@ let levelData = [
       { type: 0, x: 0, y: 0.6 }, 
       { type: 0, x: 0.33, y: 0.6 }
     ],
-    enemyPreset: [{ type: 'bunny' },{ type: 'bunny' },{ type: 'bunny' }]
-  },
+    enemyPreset: [{ type: 'bunny' },{ type: 'bunny' },{ type: 'bunny' }, {type: 'cageSpawner'}]
+  }, {level:26}, {level:27}, {level:28}, {level:29}, {
+    level: 30,
+    height: 1,
+    minSpace: 0,
+    maxSpace: 0,
+    cameraLock: true,
+    platformPreset: [
+      { type: 0, x: -0.33, y: 0.2 }, 
+      { type: 0, x: 0, y: 0.2 }, 
+      { type: 0, x: 0.33, y: 0.2 }, 
+      { type: 0, x: -0.33, y: 0.6 }, 
+      { type: 0, x: 0, y: 0.6 }, 
+      { type: 0, x: 0.33, y: 0.6 }
+    ],
+    enemyPreset: [{ type: 'fireAngel' },{ type: 'iceAngel' }]
+  }
 ]
 
 export default levelData;

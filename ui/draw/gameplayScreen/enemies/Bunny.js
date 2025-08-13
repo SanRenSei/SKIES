@@ -1,10 +1,10 @@
 import CoordUtil from "../../../util/coordUtil.js";
 import MathUtil from "../../../util/mathUtil.js";
-import AnimatedSprite from "../../components/AnimatedSprite.js";
-import BaseComponent from "../../components/BaseComponent.js";
-import CollisionShape from "../../components/CollisionShape.js";
-import DirectionalMove from "../../components/DirectionalMove.js";
-import Gravity from "../../components/Gravity.js";
+import AnimatedSprite from "../../../core/components/AnimatedSprite.js";
+import BaseComponent from "../../../core/components/BaseComponent.js";
+import CollisionShape from "../../../core/components/CollisionShape.js";
+import DirectionalMove from "../../../core/components/DirectionalMove.js";
+import Gravity from "../../../core/components/Gravity.js";
 
 class Egg extends BaseComponent {
   constructor(parent) {
