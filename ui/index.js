@@ -4,8 +4,8 @@ polyfill();
 
 import drawManager from './core/DrawManager.js';
 import preloadManager from './core/PreloadManager.js';
-import deviceTilt from './event/DeviceTilt.js';
-import mouse from './event/Mouse.js';
+import './event/DeviceTilt.js';
+import './event/Mouse.js';
 import featureFlags from './state/FeatureFlags.js';
 import RootComponent from './draw/root/index.js';
 
